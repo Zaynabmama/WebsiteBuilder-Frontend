@@ -6,9 +6,9 @@ import AboutSection from "@/components/about";
 export default function HomePage() {
   return (
    <div>
-      <Navbar></Navbar>
-      <Hero></Hero>
-      <AboutSection></AboutSection>
+      <Navbar/>
+      <Hero/>
+      <AboutSection/>
    </div>
   );
 }
