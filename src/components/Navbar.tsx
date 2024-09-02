@@ -1,26 +1,29 @@
+
 import Link from 'next/link';
-import styles from '../styles/Navbar.module.css';
+import styles from '../styles/Navbar.module.css';  // Import the CSS Module
+
 
 const Navbar = () => {
   return (
     <nav className={styles.navbar}>
-      <ul className={styles.navList}>
-        <li className={styles.navItem}>
-          <Link href="/">Home</Link>
+      <ul className={styles.navbarList}>
+        <li className={styles.navbarItem}>
+          <Link href="/">HOME</Link>
         </li>
-        <li className={styles.navItem}>
-          <Link href="/features">Features</Link>
+        <li className={styles.navbarItem}>
+          <Link href="#features">FEATURES</Link>
         </li>
-        <li className={styles.navItem}>
-          <Link href="/free-resources">Free Resources</Link>
+        <li className={styles.navbarItem}>
+          <Link href="#pre-built">PRE-BUILTSITES</Link>
         </li>
-        <li className={styles.navItem}>
-          <Link href="/testimonials">Testimonials</Link>
+        <li className={styles.navbarItem}>
+          <Link href="#testimonials">TESTIMONIALS</Link>
         </li>
-        <li className={`${styles.navItem} ${styles.join}`}>
-          <Link href="/join">Join</Link>
-        </li>
-      </ul>
+     <li>
+      <Link href="#join" className={styles.joinButton}>
+        JOIN
+      </Link></li>
+       </ul>
     </nav>
   );
 };
