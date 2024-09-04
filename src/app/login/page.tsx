@@ -5,44 +5,27 @@ import { useRouter } from 'next/navigation';
 import styles from '../../styles/Login.module.css';
 import Input from '@/components/Input';
 import Button from '@/components/Button';
+import { useAuthContext } from '@/context/AuthContext';
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const router = useRouter();
+  const [error, setError] = useState<string | null>(null); 
+  const { handleLogin } = useAuthContext();
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+   e.preventDefault();
   
     // console.log('login ', { email, password });
   
-    try {
-      const response = await fetch('http://localhost:5000/auth/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          email,
-          password,
-        }),
-      });
-  
-      if (response.ok) {
-        const data = await response.json();
-        console.log('Login successful:', data);
-        
-        
-        localStorage.setItem('token', data.access_token);
-        
-        // router.push('/dashboard');
-      } else {
-        const errorData = await response.json();
-        console.error('Login failed:', errorData.message);
+      try {
+        await handleLogin(email, password);
+        // `router.push('/dashboard');`
+        console.log('login done');
+      } catch (err) {
+        setError('Login failed. Please check your credentials.');
       }
-    } catch (error) {
-      console.error('Error during login:', error);
-    }
-  };
+    };
   
   return (
     <div className={styles.container}>
