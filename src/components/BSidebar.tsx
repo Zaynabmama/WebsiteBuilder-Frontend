@@ -1,6 +1,10 @@
 import { useState } from 'react';
 import { FiFile, FiLayers, FiChevronLeft, FiChevronRight } from 'react-icons/fi';  // Icons from react-icons
 
+interface SidebarProps {
+    pages: any[];
+    onSelectPage: (page: any) => void;
+  }
 export default function Sidebar() {
     const [isOpen, setIsOpen] = useState(true);
 
@@ -18,6 +22,13 @@ export default function Sidebar() {
           <FiFile />
           {isOpen && <span>Pages</span>}
         </div>
+        <ul>
+          {pages.map((page) => (
+            <li key={page._id} onClick={() => onSelectPage(page)}>
+              {isOpen ? page.name : <FiFile />}
+            </li>
+          ))}
+        </ul>
         <div>
           <FiLayers />
           {isOpen && <span>Components</span>}
