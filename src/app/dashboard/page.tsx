@@ -137,7 +137,7 @@ export default function DashboardPage() {
                       <td>
                         <FaEdit
                           className={styles.icon}
-                          onClick={() => router.push(`/canvas/${project._id}`)} // Navigate to canvas page
+                          onClick={() => router.push(`/builder/${project._id}`)} // Navigate to canvas page
                         />
                         <FaTrash
                           className={styles.icon}
