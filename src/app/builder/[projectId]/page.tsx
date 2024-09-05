@@ -1,6 +1,6 @@
 'use client';
 
-
+import Sidebar from '../../../components/BSidebar';
 import { useParams } from 'next/navigation';
 import { useState, useEffect } from 'react';
 
@@ -43,16 +43,16 @@ export default function ProjectBuilder() {
   
 
   return (
-    <div>
-      <h1>Project Builder for Project ID: {projectId}</h1>
-      <ul>
-      {pages.map(page => (
-        <li key={page._id} onClick={() => handleSelectPage(page)}>
-          {page.name}
-          </li>
-      ))}
-    </ul>
+    <div style={{ display: 'flex' }}>
+      <Sidebar
+        onAddPage={() => console.log('Add Page')}
+        pages={pages}
+        onSelectPage={handleSelectPage}
+        onDeletePage={() => console.log('Delete Page')}
+      />
+      <div>
     {selectedPage && <h2>Editing Page: {selectedPage.name}</h2>}
+    </div>
     </div>
   );
 }
