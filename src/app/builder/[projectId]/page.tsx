@@ -3,6 +3,7 @@
 import Sidebar from '../../../components/BSidebar';
 import { useParams } from 'next/navigation';
 import { useState, useEffect } from 'react';
+import styles from '../../../styles/builder.module.css';
 
 export default function ProjectBuilder() {
   const { projectId } = useParams();
@@ -98,14 +99,14 @@ export default function ProjectBuilder() {
   };
 
   return (
-    <div style={{ display: 'flex' }}>
+    <div className={styles.builderContainer}>
       <Sidebar
         onAddPage={handleAddPage}
         pages={pages}
         onSelectPage={handleSelectPage}
         onDeletePage={handleDeletePage}
       />
-      <div>
+      <div className={styles.editor}>
     {selectedPage && <h2>Editing Page: {selectedPage.name}</h2>}
     </div>
     </div>
