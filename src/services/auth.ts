@@ -10,8 +10,12 @@ export const loginService = async (email: string, password: string) => {
       throw new Error('Login failed');
     }
   
-    const data = await response.json(); // Return user data
+    const data = await response.json(); 
+    console.log('Login response:', data);
     localStorage.setItem('token', data.access_token);
-    return data;
+    return { 
+      token: data.access_token, 
+      user: data.user 
+    };
   };
   

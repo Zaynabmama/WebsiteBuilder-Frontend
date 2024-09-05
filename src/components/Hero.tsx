@@ -1,4 +1,3 @@
-
 import styles from '../styles/Hero.module.css';
 
 const Hero = () => {
