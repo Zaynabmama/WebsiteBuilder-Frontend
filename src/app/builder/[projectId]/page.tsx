@@ -3,7 +3,14 @@
 import Sidebar from '../../../components/BSidebar';
 import { useParams } from 'next/navigation';
 import { useState, useEffect } from 'react';
+import Canvas from '../../../components/Canvas';
 import styles from '../../../styles/builder.module.css';
+
+interface Page {
+  _id: string;
+  name: string;
+  components: any[];
+}
 
 export default function ProjectBuilder() {
   const { projectId } = useParams();
@@ -26,6 +33,7 @@ export default function ProjectBuilder() {
   
         if (response.ok) {
           const data = await response.json();
+          
           setPages(data);
         } else {
           console.error('Failed to fetch pages');
@@ -38,7 +46,7 @@ export default function ProjectBuilder() {
     if (projectId) fetchPages();
   }, [projectId]);
 
-  const handleSelectPage = (page: any) => {
+  const handleSelectPage = (page: Page) => {
     setSelectedPage(page);
   };
 
