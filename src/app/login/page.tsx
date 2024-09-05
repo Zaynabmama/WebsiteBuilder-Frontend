@@ -20,40 +20,37 @@ export default function LoginPage() {
   
       try {
         await handleLogin(email, password);
-        // `router.push('/dashboard');`
+        router.push('/dashboard');
         console.log('login done');
       } catch (err) {
         setError('Login failed. Please check your credentials.');
       }
     };
   
-  return (
-    <div className={styles.container}>
-      <form onSubmit={handleSubmit} className={styles.form}>
-        <h2 className={styles.title}>Sign in</h2>
-        <Input
-          type="email"
-          placeholder="Enter your email address"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
-        <Input
-          type="password"
-          placeholder="Enter your password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-        <Button type="submit">Log In</Button>
-        <p className={styles.forgotPassword}>
-          <a href="#">Forgot your password?</a>
-        </p>
-        <p className={styles.agreement}>
-          By creating an account, you agree to the <a href="#">Terms of use</a> and <a href="#">Privacy Policy</a>.
-        </p>
-        <p className={styles.signup}>
-          Dont have an account? <a href="#">Sign Up</a>
-        </p>
-      </form>
-    </div>
-  );
-}
+    return (
+      <div className={styles.container}>
+        <div className={styles.formWrapper}>
+          <h2 className={styles.title}>Sign In</h2>
+          <form onSubmit={handleSubmit} className={styles.form}>
+            <Input
+              type="email"
+              placeholder="Enter your email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+            <Input
+              type="password"
+              placeholder="Enter your password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+            <Button type="submit" className={styles.submitButton}>Log In</Button>
+          </form>
+          <p className={styles.forgotPassword}><a href="#">Forgot your password?</a></p>
+          <p className={styles.signup}>
+            Don't have an account? <a href="/signup">Sign Up</a>
+          </p>
+        </div>
+      </div>
+    );
+  }
