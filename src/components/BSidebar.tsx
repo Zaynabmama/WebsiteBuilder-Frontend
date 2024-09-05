@@ -1,11 +1,12 @@
 import { useState } from 'react';
-import { FiFile, FiLayers, FiChevronLeft, FiChevronRight } from 'react-icons/fi';  // Icons from react-icons
+import { FiFile, FiLayers, FiChevronLeft, FiChevronRight, FiTrash } from 'react-icons/fi';  // Icons from react-icons
 
 interface SidebarProps {
     pages: any[];
     onSelectPage: (page: any) => void;
+    onDeletePage: (pageId: string) => void;
   }
-export default function Sidebar() {
+export default function Sidebar({ pages, onSelectPage, onDeletePage }: SidebarProps) {
     const [isOpen, setIsOpen] = useState(true);
 
   const toggleSidebar = () => {
@@ -26,6 +27,7 @@ export default function Sidebar() {
           {pages.map((page) => (
             <li key={page._id} onClick={() => onSelectPage(page)}>
               {isOpen ? page.name : <FiFile />}
+              <FiTrash onClick={() => onDeletePage(page._id)} />
             </li>
           ))}
         </ul>
