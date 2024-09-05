@@ -2,15 +2,24 @@ import { useState } from 'react';
 import { FiFile, FiLayers, FiChevronLeft, FiChevronRight, FiTrash } from 'react-icons/fi';  // Icons from react-icons
 
 interface SidebarProps {
+    onAddPage: (name: string) => void;
     pages: any[];
     onSelectPage: (page: any) => void;
     onDeletePage: (pageId: string) => void;
   }
-export default function Sidebar({ pages, onSelectPage, onDeletePage }: SidebarProps) {
+export default function Sidebar({ pages, onSelectPage,onAddPage, onDeletePage }: SidebarProps) {
     const [isOpen, setIsOpen] = useState(true);
+    const [newPageName, setNewPageName] = useState('');
 
   const toggleSidebar = () => {
     setIsOpen(!isOpen);
+  };
+  const handleAddPageClick = () => {
+    if (newPageName.trim()) {
+      onAddPage(newPageName);
+    } else {
+      console.log('cant add page')
+    }
   };
   return (
     <div className={isOpen ? 'sidebar-open' : 'sidebar-closed'}>
