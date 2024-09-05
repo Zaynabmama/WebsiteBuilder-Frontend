@@ -40,6 +40,31 @@ export default function ProjectBuilder() {
   const handleSelectPage = (page: any) => {
     setSelectedPage(page);
   };
+
+  const handleDeletePage = async (pageId: string) => {
+    try {
+      const token = localStorage.getItem('token');
+      if (!token) return;
+
+      const response = await fetch(`http://localhost:5000/project/${projectId}/page/${pageId}`, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+      });
+
+      if (response.ok) {
+        setPages(pages.filter(page => page._id !== pageId)); 
+        if (selectedPage?._id === pageId) {
+          setSelectedPage(null); 
+        }
+      } else {
+        console.error('Failed to delete page');
+      }
+    } catch (error) {
+      console.error('Error deleting page:', error);
+    }
+  };
   
 
   return (
@@ -48,7 +73,7 @@ export default function ProjectBuilder() {
         onAddPage={() => console.log('Add Page')}
         pages={pages}
         onSelectPage={handleSelectPage}
-        onDeletePage={() => console.log('Delete Page')}
+        onDeletePage={handleDeletePage}
       />
       <div>
     {selectedPage && <h2>Editing Page: {selectedPage.name}</h2>}
