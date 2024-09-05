@@ -1,0 +1,58 @@
+/* src/styles/global.css */
+
+:root {
+  --primary-color: #1D6679;
+  --secondary-color: #6DAFCB;
+  --accent-color: #FF4D4D;
+  --background-color: #f5f5f5;
+  --text-color: #000000;
+  --white-color: #ffffff;
+
+  --font-large: 2rem;
+  --font-medium: 1.5rem;
+  --font-small: 1rem;
+
+  --spacing-small: 10px;
+  --spacing-medium: 20px;
+  --spacing-large: 40px;
+
+  --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Arial', sans-serif;
+  background-color: var(--background-color);
+  color: var(--text-color);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  outline: none;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
