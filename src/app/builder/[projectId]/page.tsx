@@ -181,27 +181,27 @@ export default function ProjectBuilder() {
           <>
             <h3>Editing Page: {selectedPage.name}</h3>
             <Canvas
-              components={selectedPage.components}
-              setComponents={(components: any) => {
-                const updatedPages = pages.map((p) =>
-                  p._id === selectedPage._id ? { ...p, components } : p
-                );
-                setPages(updatedPages);
-                setSelectedPage({
-                  ...selectedPage,
-                  components,
-                });
-              }}
-            />
-            <button onClick={handleSaveComponents} disabled={isSaving} className={styles.saveButton}>
-              {isSaving ? 'Saving...' : 'Save Page'}
-            </button>
-          </>
-        ) : (
-          <h3>Select a page to edit or create a new one.</h3>
-        )}
-    </div>
-    </div>
+                components={selectedPage.components}
+                setComponents={(components: any) => {
+                  const updatedPages = pages.map((p) =>
+                    p._id === selectedPage._id ? { ...p, components } : p
+                  );
+                  setPages(updatedPages);
+                  setSelectedPage({
+                    ...selectedPage,
+                    components,
+                  });
+                }}
+              />
+              <button onClick={handleSaveComponents} disabled={isSaving}>
+                {isSaving ? 'Saving...' : 'Save Components'}
+              </button>
+            </>
+          ) : (
+            <h3>Select a page to edit or create a new one.</h3>
+          )}
+        </div>
+      </div>
     </DndProvider>
   );
 
