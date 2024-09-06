@@ -1,5 +1,7 @@
 'use client';
 
+import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
 import Sidebar from '../../../components/BSidebar';
 import { useParams } from 'next/navigation';
 import { useState, useEffect } from 'react';
@@ -16,6 +18,7 @@ export default function ProjectBuilder() {
   const { projectId } = useParams();
   const [pages, setPages] = useState<any[]>([]);
   const [selectedPage, setSelectedPage] = useState<any>(null);
+  const [isSaving, setIsSaving] = useState(false); 
 
 
   useEffect(() => {
@@ -106,7 +109,66 @@ export default function ProjectBuilder() {
     }
   };
 
+  const validateComponents = (components: any[]) => {
+    return components.map((component) => {
+  
+      if (!component.type) {
+        throw new Error('Component type is missing');
+      }
+      if (!component.properties) {
+        component.properties = {};
+      }
+      return component;
+    });
+  };
+  const handleSaveComponents = async () => {
+    if (!selectedPage) {
+      console.error('No page selected');
+      return;
+    }
+  
+    setIsSaving(true); 
+  
+    try {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        console.error('No token found, user not authenticated');
+        return;
+      }
+  
+      const response = await fetch(`http://localhost:5000/components/${projectId}/${selectedPage._id}/`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(selectedPage.components),
+      });
+  
+      if (response.ok) {
+        console.log('Components saved successfully');
+        const updatedPage = await response.json();
+  
+        const updatedPages = pages.map((p) =>
+          p._id === selectedPage._id ? updatedPage : p
+        );
+        setPages(updatedPages);
+        setSelectedPage(updatedPage);
+      } else {
+        const errorMsg = await response.text();
+        console.error( errorMsg);
+      }
+    } catch (error) {
+      console.error( error);
+    } finally {
+      setIsSaving(false);
+    }
+  };
+    
+
+
   return (
+    <DndProvider backend={HTML5Backend}>
     <div className={styles.builderContainer}>
       <Sidebar
         onAddPage={handleAddPage}
@@ -115,8 +177,32 @@ export default function ProjectBuilder() {
         onDeletePage={handleDeletePage}
       />
       <div className={styles.editor}>
-    {selectedPage && <h2>Editing Page: {selectedPage.name}</h2>}
+        {selectedPage ? (
+          <>
+            <h3>Editing Page: {selectedPage.name}</h3>
+            <Canvas
+              components={selectedPage.components}
+              setComponents={(components: any) => {
+                const updatedPages = pages.map((p) =>
+                  p._id === selectedPage._id ? { ...p, components } : p
+                );
+                setPages(updatedPages);
+                setSelectedPage({
+                  ...selectedPage,
+                  components,
+                });
+              }}
+            />
+            <button onClick={handleSaveComponents} disabled={isSaving} className={styles.saveButton}>
+              {isSaving ? 'Saving...' : 'Save Page'}
+            </button>
+          </>
+        ) : (
+          <h3>Select a page to edit or create a new one.</h3>
+        )}
     </div>
     </div>
+    </DndProvider>
   );
+
 }
