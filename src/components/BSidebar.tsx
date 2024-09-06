@@ -1,5 +1,7 @@
 import { FiPlus, FiTrash, FiFile, FiLayers, FiChevronLeft, FiChevronRight } from 'react-icons/fi';
 import { useState } from 'react';
+
+import { useDrag } from 'react-dnd'; 
 import styles from '../styles/BSidebar.module.css';
 
 interface Page {
@@ -31,9 +33,47 @@ export default function Sidebar({ onAddPage, pages, onSelectPage, onDeletePage }
       setNewPageName('');
       setShowInput(false);
     } else {
-      alert('Please enter a valid page name');
+      console.log('not valid name');
     }
   };
+
+  const ComponentItem = ({ type }: { type: string }) => {
+    const [, drag] = useDrag({
+      type: 'component',
+      item: {
+         type,
+        properties: getDefaultProperties(type), 
+       },
+
+    });
+
+    return (
+      <div ref={drag as unknown as React.LegacyRef<HTMLDivElement>} className={styles.componentItem}>
+        {type}
+      </div>
+    
+    );
+  };
+
+  const getDefaultProperties = (type: string) => {
+  switch (type) {
+    case 'Button':
+      return {
+        text: 'Click Me',
+        color: 'white',
+        backgroundColor: 'blue',
+        fontSize: '16px',
+      };
+    case 'Header':
+      return {
+        text: 'Header Text',
+        color: '#333',
+        fontSize: '24px',
+      };
+    default:
+      return {};
+  }
+};
 
   return (
     <div className={`${styles.sidebar} ${isOpen ? styles.open : styles.closed}`}>
@@ -87,7 +127,14 @@ export default function Sidebar({ onAddPage, pages, onSelectPage, onDeletePage }
             </ul>
           </div>
         ) : (
-          <div>{isOpen && <h4>Components</h4>}</div>
+          <div>
+            {isOpen && <h4>Components</h4>}
+            <div className={styles.componentList}>
+              {/* Add draggable components */}
+              <ComponentItem type="Button" />
+              <ComponentItem type="Header" />
+            </div>
+          </div>
         )}
       </div>
     </div>
