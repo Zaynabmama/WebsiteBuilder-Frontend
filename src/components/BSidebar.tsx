@@ -16,11 +16,15 @@ interface SidebarProps {
   onSelectPage: (page: Page) => void;
   onDeletePage: (pageId: string) => void;
 }
+interface ComponentItemProps {
+  type: string;
+  label: string;
+}
 const getDefaultProperties = (type: string) => {
   const component = availableComponents.find((comp) => comp.type === type);
   return component?.defaultProperties || {};
 };
-const ComponentItem = ({ type }: { type: string }) => {
+const ComponentItem = ({ type, label }: ComponentItemProps) => {
   const [, drag] = useDrag({
     type: 'component',
     item: {
@@ -33,7 +37,7 @@ const ComponentItem = ({ type }: { type: string }) => {
 
   return (
     <div ref={drag as unknown as React.LegacyRef<HTMLDivElement>} className={styles.componentItem}>
-      {type}
+      {label}
     </div>
   
   );
@@ -59,27 +63,6 @@ export default function Sidebar({ onAddPage, pages, onSelectPage, onDeletePage }
     }
   };
 
-  
-
-  const getDefaultProperties = (type: string) => {
-  switch (type) {
-    case 'button':
-      return {
-        text: 'Click Me',
-        color: 'white',
-        backgroundColor: 'blue',
-        fontSize: '16px',
-      };
-    case 'Header':
-      return {
-        text: 'Header Text',
-        color: '#333',
-        fontSize: '24px',
-      };
-    default:
-      return {};
-  }
-};
 
   return (
     <div className={`${styles.sidebar} ${isOpen ? styles.open : styles.closed}`}>
@@ -136,9 +119,9 @@ export default function Sidebar({ onAddPage, pages, onSelectPage, onDeletePage }
           <div>
             {isOpen && <h4>Components</h4>}
             <div className={styles.componentList}>
-             
-              <ComponentItem type="button" />
-              <ComponentItem type="header" />
+            {availableComponents.map((component) => (
+                <ComponentItem key={component.type} type={component.type} label={component.label} />
+              ))}
             </div>
           </div>
         )}
