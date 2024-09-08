@@ -15,7 +15,15 @@ interface Component {
         fontSize: '16px',
       },
     },
-    
+    {
+        type: 'header',
+        label: 'Header',
+        defaultProperties: {
+          text: 'Header Text',
+          fontSize: '24px',
+          color: '#333',
+        },
+      },
    
   ];
   
