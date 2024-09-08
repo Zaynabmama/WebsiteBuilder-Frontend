@@ -30,39 +30,44 @@ export default function Canvas({ components, setComponents,setSelectedComponent 
   };
 
   return (
-    <div ref={drop as unknown as React.LegacyRef<HTMLDivElement>} style={{ border: '1px dashed black', padding: '20px', minHeight: '470px' }}>
+    <div ref={drop as unknown as React.LegacyRef<HTMLDivElement>}
+    style={{ border: '1px dashed black', padding: '20px', minHeight: '470px' }}
+    >
       {components.map((component, index) => (
         <div 
         key={index}
-        onClick={() => handleComponentClick(index)}  // Trigger selection
+        onClick={() => handleComponentClick(index)}  
         style={{ ...component.properties }}
         >
-          {component.type === 'button' && (
-            <button style={component.properties}>{component.properties?.text || 'Button'}</button>
-          )}
-          {component.type === 'header' && (
-            <h1 style={component.properties}>{component.properties?.text || 'Header Text'}</h1>
-          )}
-          {component.type === 'text' && (
-            <p style={component.properties}>{component.properties?.text || 'Text Block'}</p>
-          )}
-          {component.type === 'img' && (
-            <img
-              src={component.properties?.src || 'https://via.placeholder.com/150'}
-              alt={component.properties?.alt || 'Image'}
-              style={{
-                width: component.properties?.width || '150px',
-                height: component.properties?.height || '150px',
-              }}
-            />
-          )}
-          {component.type === 'container' && (
-            <div style={component.properties}>
-              Container
+         {renderComponent(component)}
             </div>
-          )}
-        </div>
       ))}
     </div>
   );
 }
+
+const renderComponent = (component: ComponentItem) => {
+  switch (component.type) {
+    case 'button':
+      return <button style={component.properties}>{component.properties?.text || 'Button'}</button>;
+    case 'header':
+      return <h1 style={component.properties}>{component.properties?.text || 'Header Text'}</h1>;
+    case 'text':
+      return <p style={component.properties}>{component.properties?.text || 'Text Block'}</p>;
+    case 'img':
+      return (
+        <img
+          src={component.properties?.src || 'https://via.placeholder.com/150'}
+          alt={component.properties?.alt || 'Image'}
+          style={{
+            width: component.properties?.width || '150px',
+            height: component.properties?.height || '150px',
+          }}
+        />
+      );
+    case 'container':
+      return <div style={component.properties}>Container</div>;
+    default:
+      return null; // Handle undefined component types
+  }
+};
