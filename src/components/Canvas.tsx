@@ -32,7 +32,11 @@ export default function Canvas({ components, setComponents,setSelectedComponent 
   return (
     <div ref={drop as unknown as React.LegacyRef<HTMLDivElement>} style={{ border: '1px dashed black', padding: '20px', minHeight: '470px' }}>
       {components.map((component, index) => (
-        <div key={index}>
+        <div 
+        key={index}
+        onClick={() => handleComponentClick(index)}  // Trigger selection
+        style={{ ...component.properties }}
+        >
           {component.type === 'button' && (
             <button style={component.properties}>{component.properties?.text || 'Button'}</button>
           )}
@@ -54,7 +58,6 @@ export default function Canvas({ components, setComponents,setSelectedComponent 
           )}
           {component.type === 'container' && (
             <div style={component.properties}>
-              {/* Optionally allow nested components */}
               Container
             </div>
           )}
