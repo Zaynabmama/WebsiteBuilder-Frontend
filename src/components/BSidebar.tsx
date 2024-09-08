@@ -1,6 +1,6 @@
 import { FiPlus, FiTrash, FiFile, FiLayers, FiChevronLeft, FiChevronRight } from 'react-icons/fi';
 import { useState } from 'react';
-
+import { availableComponents } from '../components/prPredefinedComponents'; 
 import { useDrag } from 'react-dnd'; 
 import styles from '../styles/BSidebar.module.css';
 
@@ -16,6 +16,28 @@ interface SidebarProps {
   onSelectPage: (page: Page) => void;
   onDeletePage: (pageId: string) => void;
 }
+const getDefaultProperties = (type: string) => {
+  const component = availableComponents.find((comp) => comp.type === type);
+  return component?.defaultProperties || {};
+};
+const ComponentItem = ({ type }: { type: string }) => {
+  const [, drag] = useDrag({
+    type: 'component',
+    item: {
+       type,
+      properties: getDefaultProperties(type), 
+     },
+
+  });
+  
+
+  return (
+    <div ref={drag as unknown as React.LegacyRef<HTMLDivElement>} className={styles.componentItem}>
+      {type}
+    </div>
+  
+  );
+};
 
 export default function Sidebar({ onAddPage, pages, onSelectPage, onDeletePage }: SidebarProps) {
   const [isOpen, setIsOpen] = useState(true);
@@ -37,27 +59,11 @@ export default function Sidebar({ onAddPage, pages, onSelectPage, onDeletePage }
     }
   };
 
-  const ComponentItem = ({ type }: { type: string }) => {
-    const [, drag] = useDrag({
-      type: 'component',
-      item: {
-         type,
-        properties: getDefaultProperties(type), 
-       },
-
-    });
-
-    return (
-      <div ref={drag as unknown as React.LegacyRef<HTMLDivElement>} className={styles.componentItem}>
-        {type}
-      </div>
-    
-    );
-  };
+  
 
   const getDefaultProperties = (type: string) => {
   switch (type) {
-    case 'Button':
+    case 'button':
       return {
         text: 'Click Me',
         color: 'white',
@@ -130,9 +136,9 @@ export default function Sidebar({ onAddPage, pages, onSelectPage, onDeletePage }
           <div>
             {isOpen && <h4>Components</h4>}
             <div className={styles.componentList}>
-              {/* Add draggable components */}
-              <ComponentItem type="Button" />
-              <ComponentItem type="Header" />
+             
+              <ComponentItem type="button" />
+              <ComponentItem type="header" />
             </div>
           </div>
         )}
