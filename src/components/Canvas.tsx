@@ -11,7 +11,7 @@ interface CanvasProps {
   setSelectedComponent: (component: ComponentItem | null) => void;
 }
 
-export default function Canvas({ components, setComponents }: CanvasProps) {
+export default function Canvas({ components, setComponents,setSelectedComponent }: CanvasProps) {
   const [, drop] = useDrop({
     accept: 'component',
     drop: (item: ComponentItem) => {
@@ -25,6 +25,9 @@ export default function Canvas({ components, setComponents }: CanvasProps) {
       
     },
   });
+  const handleComponentClick = (index: number) => {
+    setSelectedComponent(components[index]);  
+  };
 
   return (
     <div ref={drop as unknown as React.LegacyRef<HTMLDivElement>} style={{ border: '1px dashed black', padding: '20px', minHeight: '470px' }}>
