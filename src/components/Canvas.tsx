@@ -29,8 +29,31 @@ export default function Canvas({ components, setComponents }: CanvasProps) {
     <div ref={drop as unknown as React.LegacyRef<HTMLDivElement>} style={{ border: '1px dashed black', padding: '20px', minHeight: '470px' }}>
       {components.map((component, index) => (
         <div key={index}>
-          {component.type === 'button' && <button>{component.properties?.text || 'Button'}</button>}
-          {component.type === 'header' && <h1>{component.properties?.text || 'Header Text'}</h1>}
+          {component.type === 'button' && (
+            <button style={component.properties}>{component.properties?.text || 'Button'}</button>
+          )}
+          {component.type === 'header' && (
+            <h1 style={component.properties}>{component.properties?.text || 'Header Text'}</h1>
+          )}
+          {component.type === 'text' && (
+            <p style={component.properties}>{component.properties?.text || 'Text Block'}</p>
+          )}
+          {component.type === 'img' && (
+            <img
+              src={component.properties?.src || 'https://via.placeholder.com/150'}
+              alt={component.properties?.alt || 'Image'}
+              style={{
+                width: component.properties?.width || '150px',
+                height: component.properties?.height || '150px',
+              }}
+            />
+          )}
+          {component.type === 'container' && (
+            <div style={component.properties}>
+              {/* Optionally allow nested components */}
+              Container
+            </div>
+          )}
         </div>
       ))}
     </div>
