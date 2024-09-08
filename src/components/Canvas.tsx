@@ -1,5 +1,5 @@
 import { useDrop } from 'react-dnd';
-
+import { availableComponents } from '../components/prPredefinedComponents'; 
 interface ComponentItem {
   type: string;
   properties?: Record<string, any>;
@@ -29,8 +29,8 @@ export default function Canvas({ components, setComponents }: CanvasProps) {
     <div ref={drop as unknown as React.LegacyRef<HTMLDivElement>} style={{ border: '1px dashed black', padding: '20px', minHeight: '470px' }}>
       {components.map((component, index) => (
         <div key={index}>
-          {component.type === 'Button' && <button>{component.properties?.text || 'Button'}</button>}
-          {component.type === 'Header' && <h1>{component.properties?.text || 'Header Text'}</h1>}
+          {component.type === 'button' && <button>{component.properties?.text || 'Button'}</button>}
+          {component.type === 'header' && <h1>{component.properties?.text || 'Header Text'}</h1>}
         </div>
       ))}
     </div>
