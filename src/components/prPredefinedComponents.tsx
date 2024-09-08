@@ -34,7 +34,7 @@ interface Component {
         },
       },
       {
-        type: 'image',
+        type: 'img',
         label: 'Image',
         defaultProperties: {
           src: 'https://via.placeholder.com/150',
