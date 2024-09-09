@@ -227,7 +227,8 @@ export default function ProjectBuilder() {
           <>
             <h3>Editing Page: {selectedPage.name}</h3>
         
-                <div className={styles.canvasContainer}>
+            <div className={styles.mainEditorContainer}>
+               <div className={styles.canvasContainer}>
                 <Canvas
                 components={selectedPage.components}
                 setComponents={(components: ComponentItem[]) => {
@@ -251,7 +252,8 @@ export default function ProjectBuilder() {
                 updateComponent={updateComponent}
               />
               </div>
-            
+              </div>
+              <div className={styles.buttonContainer}>
               
               <button onClick={handleSaveComponents} disabled={isSaving}>
                 {isSaving ? 'Saving...' : 'Save Components'}
@@ -259,7 +261,7 @@ export default function ProjectBuilder() {
               <button onClick={handlePreview}>
   Preview Page
 </button>
-
+</div>
             </>
           ) : (
             <h3>Select a page to edit or create a new one.</h3>
@@ -267,6 +269,7 @@ export default function ProjectBuilder() {
           )}
         </div>
       </div>
+     
     </DndProvider>
   );
 
