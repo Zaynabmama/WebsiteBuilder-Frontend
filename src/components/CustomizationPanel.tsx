@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import styles from '../styles/CustomizationPanel.module.css';
 
 interface ComponentItem {
-  type: 'button' | 'header' | 'text' | 'img' | 'container';
+  type: string;
   properties: {
     text?: string;
     color?: string;
