@@ -251,7 +251,7 @@ export default function ProjectBuilder() {
                 updateComponent={updateComponent}
               />
               </div>
-            </div>
+            
               
               <button onClick={handleSaveComponents} disabled={isSaving}>
                 {isSaving ? 'Saving...' : 'Save Components'}
