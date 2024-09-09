@@ -6,7 +6,7 @@ import Sidebar from '../../../components/BSidebar';
 import { useParams } from 'next/navigation';
 import { useState, useEffect } from 'react';
 import Canvas from '../../../components/Canvas';
-import styles from '../../../styles/builder.module.css';
+import styles from '../../../styles/Builderr.module.css';
 import CustomizationPanel from '../../../components/CustomizationPanel'; 
 import { ComponentItem } from '../../type';
 
