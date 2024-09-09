@@ -7,18 +7,26 @@ import { useParams } from 'next/navigation';
 import { useState, useEffect } from 'react';
 import Canvas from '../../../components/Canvas';
 import styles from '../../../styles/builder.module.css';
+import CustomizationPanel from '../../../components/CustomizationPanel'; 
 
 interface Page {
   _id: string;
   name: string;
   components: any[];
 }
+interface ComponentItem {
+  type: string;
+  properties: Record<string, any>;
+}
 
 export default function ProjectBuilder() {
   const { projectId } = useParams();
   const [pages, setPages] = useState<any[]>([]);
   const [selectedPage, setSelectedPage] = useState<any>(null);
-  const [isSaving, setIsSaving] = useState(false); 
+  const [isSaving, setIsSaving] = useState(false);
+  
+  const [selectedComponent, setSelectedComponent] = useState<any>(null);
+  
 
 
   useEffect(() => {
@@ -51,6 +59,7 @@ export default function ProjectBuilder() {
 
   const handleSelectPage = (page: Page) => {
     setSelectedPage(page);
+    setSelectedComponent(null);
   };
 
   const handleDeletePage = async (pageId: string) => {
@@ -108,6 +117,36 @@ export default function ProjectBuilder() {
       console.error('Error creating page:', error);
     }
   };
+  const handlePreview = async () => {
+    if (!selectedPage) {
+      console.error('No page selected for preview');
+      return;
+    }
+
+    try {
+      const token = localStorage.getItem('token');
+      if (!token) return;
+
+   
+      const response = await fetch(`http://localhost:5000/project/${projectId}/page/${selectedPage._id}/preview`, {
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+      });
+
+      if (response.ok) {
+        const { previewUrl } = await response.json();
+        console.log('Preview URL:', previewUrl);
+
+        window.open(previewUrl, '_blank');
+      } else {
+        throw new Error('Failed to fetch the preview URL');
+      }
+    } catch (error) {
+      console.error('Error during preview:', error);
+    }
+  };
 
   const validateComponents = (components: any[]) => {
     return components.map((component) => {
@@ -134,9 +173,9 @@ export default function ProjectBuilder() {
       if (!token) {
         console.error('No token found, user not authenticated');
         return;
-      }
+      } 
   
-      const response = await fetch(`http://localhost:5000/components/${projectId}/${selectedPage._id}/`, {
+      const response = await fetch(`http://localhost:5000/components/${projectId}/${selectedPage._id}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -164,7 +203,14 @@ export default function ProjectBuilder() {
       setIsSaving(false);
     }
   };
-    
+  const updateComponent = (updatedProperties: Record<string, any>) => {
+    if (selectedComponent) {
+      const updatedComponents = selectedPage.components.map((component) =>
+        component === selectedComponent ? { ...component, properties: updatedProperties } : component
+      );
+      setSelectedPage({ ...selectedPage, components: updatedComponents });
+    }
+  };
 
 
   return (
@@ -192,13 +238,26 @@ export default function ProjectBuilder() {
                     components,
                   });
                 }}
+                selectedComponent={selectedComponent}
+                setSelectedComponent={setSelectedComponent}
+              
               />
+              <CustomizationPanel
+                selectedComponent={selectedComponent}
+                updateComponent={updateComponent}
+              />
+              
               <button onClick={handleSaveComponents} disabled={isSaving}>
                 {isSaving ? 'Saving...' : 'Save Components'}
               </button>
+              <button onClick={handlePreview}>
+  Preview Page
+</button>
+
             </>
           ) : (
             <h3>Select a page to edit or create a new one.</h3>
+            
           )}
         </div>
       </div>
