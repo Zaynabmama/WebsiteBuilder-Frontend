@@ -9,23 +9,24 @@ import Canvas from '../../../components/Canvas';
 import styles from '../../../styles/builder.module.css';
 import CustomizationPanel from '../../../components/CustomizationPanel'; 
 
-interface Page {
-  _id: string;
-  name: string;
-  components: any[];
-}
+
 interface ComponentItem {
   type: string;
   properties: Record<string, any>;
 }
+interface Page {
+  _id: string;
+  name: string;
+  components: ComponentItem[];
+}
 
 export default function ProjectBuilder() {
   const { projectId } = useParams();
-  const [pages, setPages] = useState<any[]>([]);
-  const [selectedPage, setSelectedPage] = useState<any>(null);
+  const [pages, setPages] = useState<Page[]>([]);
+  const [selectedPage, setSelectedPage] = useState<Page | null>(null);
   const [isSaving, setIsSaving] = useState(false);
   
-  const [selectedComponent, setSelectedComponent] = useState<any>(null);
+  const [selectedComponent, setSelectedComponent] = useState<ComponentItem | null>(null);
   
 
 
@@ -205,10 +206,10 @@ export default function ProjectBuilder() {
   };
   const updateComponent = (updatedProperties: Record<string, any>) => {
     if (selectedComponent) {
-      const updatedComponents = selectedPage.components.map((component) =>
+      const updatedComponents = selectedPage!.components.map((component) =>
         component === selectedComponent ? { ...component, properties: updatedProperties } : component
       );
-      setSelectedPage({ ...selectedPage, components: updatedComponents });
+      setSelectedPage({ ...selectedPage!, components: updatedComponents });
     }
   };
 
@@ -226,9 +227,11 @@ export default function ProjectBuilder() {
         {selectedPage ? (
           <>
             <h3>Editing Page: {selectedPage.name}</h3>
-            <Canvas
+            <div className={styles.mainEditorContainer}>
+                <div className={styles.canvasContainer}>
+                <Canvas
                 components={selectedPage.components}
-                setComponents={(components: any) => {
+                setComponents={(components: ComponentItem[]) => {
                   const updatedPages = pages.map((p) =>
                     p._id === selectedPage._id ? { ...p, components } : p
                   );
@@ -242,10 +245,14 @@ export default function ProjectBuilder() {
                 setSelectedComponent={setSelectedComponent}
               
               />
+              </div>
+                <div className={styles.customizationContainer}>
               <CustomizationPanel
                 selectedComponent={selectedComponent}
                 updateComponent={updateComponent}
               />
+              </div>
+            </div>
               
               <button onClick={handleSaveComponents} disabled={isSaving}>
                 {isSaving ? 'Saving...' : 'Save Components'}
