@@ -8,7 +8,6 @@ interface ComponentItem {
 interface CanvasProps {
   components: ComponentItem[];
   setComponents: (components: ComponentItem[]) => void;
-  selectedComponent: ComponentItem | null;
   setSelectedComponent: (component: ComponentItem | null) => void;
 }
 
