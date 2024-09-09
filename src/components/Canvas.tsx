@@ -1,6 +1,7 @@
 import { useDrop } from 'react-dnd';
 import { availableComponents } from '../components/prPredefinedComponents'; 
 import { ComponentItem } from '../app/type'; 
+import styles from '../styles/Canvas.module.css'
 
 
 interface CanvasProps {
@@ -30,7 +31,7 @@ export default function Canvas({ components, setComponents,setSelectedComponent 
 
   return (
     <div ref={drop as unknown as React.LegacyRef<HTMLDivElement>}
-    style={{ border: '1px dashed black', padding: '20px', minHeight: '470px' }}
+    className={styles.canvas}
     >
       {components.map((component, index) => (
         <div 
@@ -48,21 +49,7 @@ export default function Canvas({ components, setComponents,setSelectedComponent 
 const renderComponent = (component: ComponentItem) => {
   switch (component.type) {
     case 'button':
-      return (
-      <button
-      style={{
-        color: component.properties.color || '#fff',
-        backgroundColor: component.properties.backgroundColor || '#007bff',
-        padding: component.properties.padding || '10px 20px',
-        fontSize: component.properties.fontSize || '16px',
-        border: 'none',
-        borderRadius: '4px',
-        cursor: 'pointer',
-      }}
-    >
-      {component.properties?.text || 'Button'}
-    </button>
-  );
+      return <button>{component.properties?.text || 'Button'}</button>;
     case 'header':
       return <h1 style={component.properties}>{component.properties?.text || 'Header Text'}</h1>;
     case 'text':
