@@ -48,7 +48,21 @@ export default function Canvas({ components, setComponents,setSelectedComponent 
 const renderComponent = (component: ComponentItem) => {
   switch (component.type) {
     case 'button':
-      return <button style={component.properties}>{component.properties?.text || 'Button'}</button>;
+      return (
+      <button
+      style={{
+        color: component.properties.color || '#fff',
+        backgroundColor: component.properties.backgroundColor || '#007bff',
+        padding: component.properties.padding || '10px 20px',
+        fontSize: component.properties.fontSize || '16px',
+        border: 'none',
+        borderRadius: '4px',
+        cursor: 'pointer',
+      }}
+    >
+      {component.properties?.text || 'Button'}
+    </button>
+  );
     case 'header':
       return <h1 style={component.properties}>{component.properties?.text || 'Header Text'}</h1>;
     case 'text':
