@@ -1,9 +1,7 @@
 import { useDrop } from 'react-dnd';
 import { availableComponents } from '../components/prPredefinedComponents'; 
-interface ComponentItem {
-  type: string;
-  properties?: Record<string, any>;
-}
+import { ComponentItem } from '../app/type'; 
+
 
 interface CanvasProps {
   components: ComponentItem[];
