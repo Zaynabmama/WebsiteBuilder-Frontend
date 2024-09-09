@@ -27,17 +27,18 @@ const fetchWithAuth = async (url: string, options: RequestInit = {}): Promise<Re
 
 
 export const createProjectService = async (projectName: string): Promise<any> => {
-  const response = await fetchWithAuth(`${api}/project`, {
+  const response = await fetchWithAuth(`${api}/projects`, {
     method: 'POST',
     body: JSON.stringify({ name: projectName }),
   });
 
   const project = await response.json();
+  console.log('Created Project:', project);
   return project;
 };
 
 export const getProjectsService = async (): Promise<any[]> => {
-  const response = await fetchWithAuth(`${api}/project`, {
+  const response = await fetchWithAuth(`${api}/projects`, {
     method: 'GET',
   });
 
@@ -46,7 +47,7 @@ export const getProjectsService = async (): Promise<any[]> => {
 
 
 export const deleteProjectService = async (projectId: string): Promise<void> => {
-  await fetchWithAuth(`${api}/project/${projectId}`, {
+  await fetchWithAuth(`${api}/projects/${projectId}`, {
     method: 'DELETE',
   });
 };
