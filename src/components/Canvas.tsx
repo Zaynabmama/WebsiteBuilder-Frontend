@@ -8,6 +8,7 @@ interface ComponentItem {
 interface CanvasProps {
   components: ComponentItem[];
   setComponents: (components: ComponentItem[]) => void;
+  selectedComponent: ComponentItem | null;
   setSelectedComponent: (component: ComponentItem | null) => void;
 }
 
@@ -68,6 +69,6 @@ const renderComponent = (component: ComponentItem) => {
     case 'container':
       return <div style={component.properties}>Container</div>;
     default:
-      return null; // Handle undefined component types
+      return null;
   }
 };
