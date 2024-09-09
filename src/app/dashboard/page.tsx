@@ -24,9 +24,10 @@ export default function DashboardPage() {
   const [loading, setLoading] = useState(true);
   const [showAddProjectInput, setShowAddProjectInput] = useState(false);
   const [newProjectName, setNewProjectName] = useState('');
-  const [validationError, setValidationError] = useState<string | null>(null); // Store validation errors
+  const [validationError, setValidationError] = useState<string | null>(null);
   const router = useRouter();
 
+  // Fetch the list of projects on component mount
   useEffect(() => {
     const fetchProjects = async () => {
       try {
@@ -41,30 +42,60 @@ export default function DashboardPage() {
     fetchProjects();
   }, []);
 
+  // Function to handle project creation
   const handleAddProject = async () => {
     if (!newProjectName.trim()) {
       setValidationError('Please enter a valid project name');
       return;
     }
-    setValidationError(null); // Clear validation error if valid input
+    setValidationError(null);
+
+    // Optimistically add the new project to the UI before waiting for API response
+    const optimisticProject = { name: newProjectName, _id: Date.now().toString(), pages: [] };
+
+    setProjects((prevProjects) => {
+      const updatedProjects = [...prevProjects, optimisticProject];
+      console.log('Optimistic Projects Update:', updatedProjects);
+      return updatedProjects;
+    });
 
     try {
-      await createProjectService(newProjectName);
+      console.log('Creating new project:', newProjectName);
+
+      const startTime = Date.now(); // Start time for API call
+
+      const createdProject = await createProjectService(newProjectName);
+
+      const endTime = Date.now(); // End time for API call
+      console.log('API Response Time:', (endTime - startTime) + 'ms'); // Log API response time
+      console.log('Created Project:', createdProject);
+
+      // Replace the optimistic project with the actual project from the backend
+      setProjects((prevProjects) =>
+        prevProjects.map((proj) =>
+          proj._id === optimisticProject._id ? createdProject : proj
+        )
+      );
+
       setNewProjectName(''); // Clear the input field
       setShowAddProjectInput(false); // Hide input field
-      // Refresh the project list
-      const updatedProjects = await getProjectsService();
-      setProjects(updatedProjects);
     } catch (err) {
+      // If API call fails, remove the optimistic project from the UI
+      setProjects((prevProjects) =>
+        prevProjects.filter((proj) => proj._id !== optimisticProject._id)
+      );
       setError('Failed to add project');
     }
   };
 
+  // Function to handle project deletion
   const handleDelete = async (projectId: string) => {
     if (window.confirm('Are you sure you want to delete this project?')) {
       try {
         await deleteProjectService(projectId);
-        setProjects((prevProjects) => prevProjects.filter((project) => project._id !== projectId));
+        setProjects((prevProjects) =>
+          prevProjects.filter((project) => project._id !== projectId)
+        );
       } catch (err) {
         setError('Failed to delete project');
       }
@@ -105,7 +136,6 @@ export default function DashboardPage() {
               <button onClick={handleAddProject} className={styles.submitButton}>
                 Add Project
               </button>
-              {/* Display validation error */}
               {validationError && <p className={styles.errorText}>{validationError}</p>}
             </div>
           )}
@@ -137,11 +167,11 @@ export default function DashboardPage() {
                       <td>
                         <FaEdit
                           className={styles.icon}
-                          onClick={() => router.push(`/builder/${project._id}`)} // Navigate to canvas page
+                          onClick={() => router.push(`/builder/${project._id}`)}
                         />
                         <FaTrash
                           className={styles.icon}
-                          onClick={() => handleDelete(project._id)} // Delete the project
+                          onClick={() => handleDelete(project._id)}
                         />
                       </td>
                     </tr>
