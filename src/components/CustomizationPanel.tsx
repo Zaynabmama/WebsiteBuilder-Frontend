@@ -28,7 +28,7 @@ interface CustomizationPanelProps {
 }
 
 export default function CustomizationPanel({ selectedComponent, updateComponent }: CustomizationPanelProps) {
-  const [componentProperties, setComponentProperties] = useState<ComponentItem['properties']>({});
+  const [componentProperties, setComponentProperties] = useState<Record<string, any>>({});
 
   useEffect(() => {
     if (selectedComponent) {
@@ -36,7 +36,7 @@ export default function CustomizationPanel({ selectedComponent, updateComponent 
     }
   }, [selectedComponent]);
 
-  const handlePropertyChange = (property: keyof ComponentItem['properties'], value: any) => {
+  const handlePropertyChange = (property: string, value: any) => {
     const updatedProperties = {
       ...componentProperties,
       [property]: value,
