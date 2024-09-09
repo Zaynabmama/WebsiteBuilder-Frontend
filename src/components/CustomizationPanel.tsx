@@ -1,23 +1,27 @@
 import { useState, useEffect } from 'react';
 import styles from '../styles/CustomizationPanel.module.css';
 
+// interface ComponentItem {
+//   type: 'button' | 'header' | 'text' | 'img' | 'container';
+//   properties: {
+//     text?: string;
+//     color?: string;
+//     backgroundColor?: string;
+//     fontSize?: string;
+//     src?: string;
+//     alt?: string;
+//     width?: string;
+//     height?: string;
+//     justifyContent?: string;
+//     alignItems?: string;
+//     padding?: string;
+//   };
+// }
 interface ComponentItem {
-  type: string;
-  properties: {
-    text?: string;
-    color?: string;
-    backgroundColor?: string;
-    fontSize?: string;
-    src?: string;
-    alt?: string;
-    width?: string;
-    height?: string;
-    justifyContent?: string;
-    alignItems?: string;
-    padding?: string;
-  };
-}
-
+    type: string; 
+    properties: Record<string, any>;
+  }
+  
 interface CustomizationPanelProps {
   selectedComponent: ComponentItem | null;
   updateComponent: (updatedProperties: ComponentItem['properties']) => void;
