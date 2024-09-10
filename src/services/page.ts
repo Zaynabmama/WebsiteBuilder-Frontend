@@ -55,6 +55,34 @@ export const deletePage = async (projectId: string, pageId: string): Promise<voi
     throw new Error('Failed to delete page');
   }
 };
+export const saveComponents = async (projectId: string, pageId: string, components: any[]) => {
+  const token = getToken();
+  if (!token) throw new Error('No token found, user not authenticated');
+
+  const response = await fetch(`${apiUrl}/components/${projectId}/${pageId}`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(components),
+  });
+
+  if (!response.ok) throw new Error('Failed to save components');
+  return await response.json();
+};
+
+export const previewPage = async (projectId: string, pageId: string) => {
+  const token = getToken();
+  if (!token) throw new Error('No token found, user not authenticated');
+
+  const response = await fetch(`${apiUrl}/project/${projectId}/page/${pageId}/preview`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+
+  if (!response.ok) throw new Error('Failed to fetch preview URL');
+  return await response.json();
+};
 
 
 export  interface Page {
@@ -64,6 +92,7 @@ export  interface Page {
 }
 
 export  interface ComponentItem {
+  _id: string; 
   type: string;
   properties: Record<string, any>;
 }
