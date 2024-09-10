@@ -23,7 +23,7 @@ export default function ProjectBuilder() {
   const [pages, setPages] = useState<Page[]>([]);
   const [selectedPage, setSelectedPage] = useState<Page | null>(null);
   const [isSaving, setIsSaving] = useState(false);
-  
+  const [error, setError] = useState<string | null>(null);
   const [selectedComponent, setSelectedComponent] = useState<ComponentItem | null>(null);
   
 
@@ -49,30 +49,20 @@ export default function ProjectBuilder() {
   };
 
   const handleDeletePage = async (pageId: string) => {
-    try {
-      const token = localStorage.getItem('token');
-      if (!token) return;
-
-      const response = await fetch(`http://localhost:5000/project/${projectId}/page/${pageId}`, {
-        method: 'DELETE',
-        headers: {
-          'Authorization': `Bearer ${token}`,
-        },
-      });
-
-      if (response.ok) {
-        setPages(pages.filter(page => page._id !== pageId)); 
+    if (typeof projectId === 'string') {
+      try {
+        await deletePage(projectId, pageId);
+        setPages(pages.filter(page => page._id !== pageId));
         if (selectedPage?._id === pageId) {
-          setSelectedPage(null); 
+          setSelectedPage(null);
         }
-      } else {
-        console.error('Failed to delete page');
+      } catch (error) {
+        setError('Error deleting page');
+        console.error('Error deleting page:', error);
       }
-    } catch (error) {
-      console.error('Error deleting page:', error);
     }
   };
-  
+
   const handleAddPage = async (name: string) => {
     try {
       const token = localStorage.getItem('token');
