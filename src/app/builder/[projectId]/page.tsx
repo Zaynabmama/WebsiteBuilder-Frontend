@@ -8,19 +8,18 @@ import { useState, useEffect } from 'react';
 import Canvas from '../../../components/Canvas';
 import styles from '../../../styles/Builderr.module.css';
 import CustomizationPanel from '../../../components/CustomizationPanel'; 
-import { ComponentItem } from '../../type';
+
+import { Page,ComponentItem,fetchPages, createPage, deletePage } from '../../../services/page';
+import { saveComponents, previewPage } from '../../../services/component';
 
 
 
-interface Page {
-  _id: string;
-  name: string;
-  components: ComponentItem[];
-}
+
+
 
 
 export default function ProjectBuilder() {
-  const { projectId } = useParams();
+  const { projectId } = useParams<{ projectId: string | string[] }>();
   const [pages, setPages] = useState<Page[]>([]);
   const [selectedPage, setSelectedPage] = useState<Page | null>(null);
   const [isSaving, setIsSaving] = useState(false);
@@ -30,32 +29,19 @@ export default function ProjectBuilder() {
 
 
   useEffect(() => {
-    const fetchPages = async () => {
-      try {
-        const token = localStorage.getItem('token');
-        if (!token) return;
-  
-        const response = await fetch(`http://localhost:5000/project/${projectId}/page`, {
-          method: 'GET',
-          headers: {
-            'Authorization': `Bearer ${token}`
-          }
-        });
-  
-        if (response.ok) {
-          const data = await response.json();
-          
-          setPages(data);
-        } else {
-          console.error('Failed to fetch pages');
+    if (typeof projectId === 'string') {
+      const loadPages = async () => {
+        try {
+          const pagesData = await fetchPages(projectId);
+          setPages(pagesData);
+        } catch (error) {
+          console.error('Error fetching pages:', error);
         }
-      } catch (error) {
-        console.error('Error fetching pages:', error);
-      }
-    };
-  
-    if (projectId) fetchPages();
+      };
+      loadPages();
+    }
   }, [projectId]);
+
 
   const handleSelectPage = (page: Page) => {
     setSelectedPage(page);
@@ -239,7 +225,7 @@ export default function ProjectBuilder() {
         
             <div className={styles.mainEditorContainer}>
                <div className={styles.canvasContainer}>
-                <Canvas
+                {/* <Canvas
                 components={selectedPage.components}
                 setComponents={(components: ComponentItem[]) => {
                   const updatedPages = pages.map((p) =>
@@ -254,7 +240,7 @@ export default function ProjectBuilder() {
                 selectedComponent={selectedComponent}
                 setSelectedComponent={setSelectedComponent}
               
-              />
+              /> */}
               </div>
                 <div className={styles.customizationContainer}>
               <CustomizationPanel
