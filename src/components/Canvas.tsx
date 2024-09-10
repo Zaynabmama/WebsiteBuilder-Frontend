@@ -28,15 +28,23 @@ export default function Canvas({ components, setComponents,setSelectedComponent 
   const handleComponentClick = (index: number) => {
     setSelectedComponent(components[index]);  
   };
-
-  return (
-    <div ref={drop as unknown as React.LegacyRef<HTMLDivElement>}
-    className={styles.canvas}
+  {components.map((component) => (
+    <div
+      key={component._id} 
+      onClick={() => handleComponentClick(component)}
+      style={{ ...component.properties }}
     >
-      {components.map((component, index) => (
+      {renderComponent(component)}
+    </div>
+  ))}
+  
+  return (
+    <div ref={drop as React.RefObject<HTMLDivElement>}
+     className={styles.canvas}>
+      {components.map((component) => (
         <div 
-        key={index}
-        onClick={() => handleComponentClick(index)}  
+        key={component._id}
+        onClick={() => handleComponentClick(component)}  
         style={{ ...component.properties }}
         >
          {renderComponent(component)}
