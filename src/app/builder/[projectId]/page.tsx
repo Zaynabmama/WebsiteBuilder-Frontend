@@ -64,33 +64,15 @@ export default function ProjectBuilder() {
   };
 
   const handleAddPage = async (name: string) => {
-    try {
-      const token = localStorage.getItem('token');
-      if (!token) return;
-  
-      const newPage = {
-        name,
-        components: [],
-      };
-  
-      const response = await fetch(`http://localhost:5000/project/${projectId}/page`, {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(newPage),
-      });
-  
-      if (response.ok) {
-        const createdPage = await response.json();
-        setPages([...pages, createdPage]);  
-        setSelectedPage(createdPage); 
-      } else {
-        console.error('Failed to create page');
+    if (typeof projectId === 'string') {
+      try {
+        const newPage = await createPage(projectId, name);
+        setPages(prevPages => [...prevPages, newPage]);
+        setSelectedPage(newPage);
+      } catch (error) {
+        setError('Error creating page');
+        console.error('Error creating page:', error);
       }
-    } catch (error) {
-      console.error('Error creating page:', error);
     }
   };
   const handlePreview = async () => {
