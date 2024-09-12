@@ -9,177 +9,67 @@ import Canvas from '../../../components/Canvas';
 import styles from '../../../styles/Builderr.module.css';
 import CustomizationPanel from '../../../components/CustomizationPanel'; 
 
-import { Page,ComponentItem,fetchPages, createPage, deletePage } from '../../../services/page';
-import { saveComponents, previewPage } from '../../../services/component';
-
-
-
-
-
-
+import { ProjectProvider, useProject } from '../../../context/ProjectContext';
+import { fetchPages, saveComponents, previewPage } from '../../../services/page';
+import { ComponentItem, Page } from '../../../type';
 
 export default function ProjectBuilder() {
-  const { projectId } = useParams<{ projectId: string | string[] }>();
-  const [pages, setPages] = useState<Page[]>([]);
-  const [selectedPage, setSelectedPage] = useState<Page | null>(null);
+  const { projectId } = useParams<{ projectId: string }>();
+  const { pages, setPages, selectedPage, setSelectedPage, selectedComponent, setSelectedComponent, updateComponent, saveComponents, previewPage } = useProject();
   const [isSaving, setIsSaving] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [selectedComponent, setSelectedComponent] = useState<ComponentItem | null>(null);
+
+
   
+ 
+ 
 
-
-  useEffect(() => {
-    if (typeof projectId === 'string') {
-      const loadPages = async () => {
-        try {
-          const pagesData = await fetchPages(projectId);
-          setPages(pagesData);
-        } catch (error) {
-          console.error('Error fetching pages:', error);
-        }
-      };
-      loadPages();
-    }
-  }, [projectId]);
-
-
-  const handleSelectPage = (page: Page) => {
-    setSelectedPage(page);
-    setSelectedComponent(null);
-  };
-
-  const handleDeletePage = async (pageId: string) => {
-    if (typeof projectId === 'string') {
-      try {
-        await deletePage(projectId, pageId);
-        setPages(pages.filter(page => page._id !== pageId));
-        if (selectedPage?._id === pageId) {
-          setSelectedPage(null);
-        }
-      } catch (error) {
-        setError('Error deleting page');
-        console.error('Error deleting page:', error);
-      }
-    }
-  };
-
-  const handleAddPage = async (name: string) => {
-    if (typeof projectId === 'string') {
-      try {
-        const newPage = await createPage(projectId, name);
-        setPages(prevPages => [...prevPages, newPage]);
-        setSelectedPage(newPage);
-      } catch (error) {
-        setError('Error creating page');
-        console.error('Error creating page:', error);
-      }
-    }
-  };
-  const handlePreview = async () => {
-    if (!selectedPage) {
-      console.error('No page selected for preview');
-      return;
-    }
-
-    try {
-      const token = localStorage.getItem('token');
-      if (!token) return;
-
-   
-      const response = await fetch(`http://localhost:5000/project/${projectId}/page/${selectedPage._id}/preview`, {
-        method: 'GET',
-        headers: {
-          'Authorization': `Bearer ${token}`,
-        },
-      });
-
-      if (response.ok) {
-        const { previewUrl } = await response.json();
-        console.log('Preview URL:', previewUrl);
-
-        window.open(previewUrl, '_blank');
-      } else {
-        throw new Error('Failed to fetch the preview URL');
-      }
-    } catch (error) {
-      console.error('Error during preview:', error);
-    }
-  };
-
-  const validateComponents = (components: any[]) => {
-    return components.map((component) => {
   
-      if (!component.type) {
-        throw new Error('Component type is missing');
-      }
-      if (!component.properties) {
-        component.properties = {};
-      }
-      return component;
-    });
-  };
+ 
   const handleSaveComponents = async () => {
     if (!selectedPage) {
       console.error('No page selected');
       return;
     }
   
-    setIsSaving(true); 
-  
     try {
-      const token = localStorage.getItem('token');
-      if (!token) {
-        console.error('No token found, user not authenticated');
-        return;
-      } 
-  
-      const response = await fetch(`http://localhost:5000/components/${projectId}/${selectedPage._id}`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify(selectedPage.components),
-      });
-  
-      if (response.ok) {
-        console.log('Components saved successfully');
-        const updatedPage = await response.json();
-  
-        const updatedPages = pages.map((p) =>
-          p._id === selectedPage._id ? updatedPage : p
-        );
-        setPages(updatedPages);
-        setSelectedPage(updatedPage);
-      } else {
-        const errorMsg = await response.text();
-        console.error( errorMsg);
-      }
+      setIsSaving(true);
+      await saveComponents(projectId, selectedPage._id, selectedPage.components);
     } catch (error) {
-      console.error( error);
+      console.error('Error saving components:', error);
     } finally {
       setIsSaving(false);
     }
   };
-  const updateComponent = (updatedProperties: Record<string, any>) => {
-    if (selectedComponent && selectedPage) {
-      const updatedComponents = selectedPage.components.map((component) =>
-        component === selectedComponent ? { ...component, properties: updatedProperties } : component
-      );
-      setSelectedPage({ ...selectedPage, components: updatedComponents });
+  
+  const handlePreview = async () => {
+    if (selectedPage) {
+      try {
+        const url = await previewPage(projectId, selectedPage._id || '');
+        window.open(url, '_blank');
+      } catch (error) {
+        console.error('Error previewing page:', error);
+      }
     }
   };
 
+  // const updateComponent = (updatedProperties: Record<string, any>) => {
+  //   if (selectedComponent && selectedPage) {
+  //     const updatedComponents = selectedPage.components.map((component) =>
+  //       component === selectedComponent ? { ...component, properties: updatedProperties } : component
+  //     );
+  //     setSelectedPage({ ...selectedPage, components: updatedComponents });
+  //   }
+  // };
+
+  useEffect(() => {
+    console.log('Selected Page in ProjectBuilder:', selectedPage);
+  }, [selectedPage]);
 
   return (
-    <DndProvider backend={HTML5Backend}>
+    
+      <DndProvider backend={HTML5Backend}>
     <div className={styles.builderContainer}>
-      <Sidebar
-        onAddPage={handleAddPage}
-        pages={pages}
-        onSelectPage={handleSelectPage}
-        onDeletePage={handleDeletePage}
-      />
+      <Sidebar projectId={projectId} />
       <div className={styles.editor}>
         {selectedPage ? (
           <>
@@ -213,12 +103,27 @@ export default function ProjectBuilder() {
                 setSelectedComponent={setSelectedComponent}
               
               /> */}
+              <Canvas
+                      components={selectedPage.components}
+                      setComponents={(components: ComponentItem[]) => {
+                        const updatedPages = pages.map((p) =>
+                          p._id === selectedPage._id ? { ...p, components } : p
+                        );
+                        setPages(updatedPages);
+                        setSelectedPage({
+                          ...selectedPage,
+                          components,
+                        });
+                      }}
+                      selectedComponent={selectedComponent  }
+                      setSelectedComponent={setSelectedComponent}
+                    />
               </div>
                 <div className={styles.customizationContainer}>
-              <CustomizationPanel
-                selectedComponent={selectedComponent}
+              {/* <CustomizationPanel
+                // selectedComponent={selectedComponent}
                 updateComponent={updateComponent}
-              />
+              /> */}
               </div>
               </div>
               {/* <div className={styles.buttonContainer}>
@@ -238,7 +143,8 @@ export default function ProjectBuilder() {
         </div>
       </div>
      
-    </DndProvider>
+      </DndProvider>
+ 
   );
 
 }
