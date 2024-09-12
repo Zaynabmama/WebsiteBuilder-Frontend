@@ -1,14 +1,16 @@
-import Hero from "@/components/Hero";
-import Navbar from "@/components/Navbar";
-import AboutSection from "@/components/about";
+'use client';
+import Hero from '@/components/Hero';
+import Navbar from '@/components/Navbar';
+import AboutSection from '@/components/about';
 
-
-export default function HomePage() {
+const HomePage = () => {
   return (
-   <div>
-      <Navbar/>
-      <Hero/>
-      <AboutSection/>
-   </div>
+    <div>
+      <Navbar />
+      <Hero />
+      <AboutSection />
+    </div>
   );
-}
+};
+
+export default HomePage;
