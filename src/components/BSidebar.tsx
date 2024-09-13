@@ -1,30 +1,28 @@
+'use client';
 import { FiPlus, FiTrash, FiFile, FiLayers, FiChevronLeft, FiChevronRight } from 'react-icons/fi';
-import { useState } from 'react';
-import { availableComponents } from '../components/prPredefinedComponents'; 
+import { useEffect, useState } from 'react';
+import { availableComponents } from './prPredefinedComponents'; 
 import { useDrag } from 'react-dnd'; 
 import styles from '../styles/BSidebar.module.css';
+import { Page, ComponentItem } from '../type';
+import { useProject } from '../context/ProjectContext';
+import { fetchPages } from '../services/page';
 
-interface Page {
-  _id: string;
-  name: string;
-  components: any[];  
-}
-
-interface SidebarProps {
-  onAddPage: (name: string) => void;
-  pages: Page[];
-  onSelectPage: (page: Page) => void;
-  onDeletePage: (pageId: string) => void;
-}
 interface ComponentItemProps {
   type: string;
   label: string;
 }
+
+
+interface SidebarProps {
+  projectId: string;
+}
+
 const getDefaultProperties = (type: string) => {
   const component = availableComponents.find((comp) => comp.type === type);
   return component?.defaultProperties || {};
 };
-const ComponentItem = ({ type, label }: ComponentItemProps) => {
+const DraggableComponentItemProps = ({ type, label }: ComponentItemProps) => {
   const [, drag] = useDrag({
     type: 'component',
     item: {
@@ -43,7 +41,16 @@ const ComponentItem = ({ type, label }: ComponentItemProps) => {
   );
 };
 
-export default function Sidebar({ onAddPage, pages, onSelectPage, onDeletePage }: SidebarProps) {
+export default function Sidebar({ projectId }: SidebarProps) {
+  const {
+    pages,
+    selectedPage,
+    addPage,
+    deletePage,
+    selectPage,
+    setSelectedComponent,
+    setPages, // Add this to set pages
+  } = useProject();
   const [isOpen, setIsOpen] = useState(true);
   const [activeTab, setActiveTab] = useState<'pages' | 'components'>('pages');
   const [newPageName, setNewPageName] = useState('');
@@ -52,18 +59,43 @@ export default function Sidebar({ onAddPage, pages, onSelectPage, onDeletePage }
   const toggleSidebar = () => {
     setIsOpen(!isOpen);
   };
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const fetchedPages = await fetchPages(projectId); 
+        setPages(fetchedPages);
+      } catch (error) {
+        console.error('Failed to fetch pages:', error);
+      }
+    };
 
-  const handleAddPageClick = () => {
+    fetchData();
+  }, [projectId, setPages]);
+
+ 
+  const handleAddPageClick = async () => {
     if (newPageName.trim()) {
-      onAddPage(newPageName);
+      console.log('Adding page with name:', newPageName);
+      try {
+        await addPage(projectId, newPageName);
+        console.log('Page successfully added');
+      } catch (error) {
+        console.error('Failed to add page:', error);
+      }
       setNewPageName('');
       setShowInput(false);
     } else {
-      console.log('not valid name');
+      console.log('Invalid page name');
     }
   };
+  
+  
 
-
+  const handlePageClick = (page: Page) => {
+   
+    selectPage(page);
+  };
+ 
   return (
     <div className={`${styles.sidebar} ${isOpen ? styles.open : styles.closed}`}>
       <button onClick={toggleSidebar} className={styles.toggleButton}>
@@ -107,10 +139,12 @@ export default function Sidebar({ onAddPage, pages, onSelectPage, onDeletePage }
             <ul className={styles.pageList}>
               {pages.map((page) => (
                 <li key={page._id} className={styles.pageItem}>
-                  <div onClick={() => onSelectPage(page)}>
+                  <div onClick={() => handlePageClick(page)}
+                   className={selectedPage?._id === page._id ? styles.selectedPage : ''}
+                   >
                     {isOpen ? page.name : <FiFile className={styles.pageIcon} />}
                   </div>
-                  <FiTrash className={styles.deleteIcon} onClick={() => onDeletePage(page._id)} />
+                  <FiTrash className={styles.deleteIcon} onClick={() => page._id && deletePage(projectId ,page._id)} />
                 </li>
               ))}
             </ul>
@@ -120,7 +154,7 @@ export default function Sidebar({ onAddPage, pages, onSelectPage, onDeletePage }
             {isOpen && <h4>Components</h4>}
             <div className={styles.componentList}>
             {availableComponents.map((component) => (
-                <ComponentItem key={component.type} type={component.type} label={component.label} />
+                <DraggableComponentItemProps key={component.type} type={component.type} label={component.label} />
               ))}
             </div>
           </div>
