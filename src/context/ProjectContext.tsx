@@ -9,7 +9,7 @@ interface ProjectContextType {
   selectedPage: Page | null;
   setSelectedPage: (page: Page | null) => void;
   selectedComponent: ComponentItem | null;
-  
+  isSaving: boolean;
   selectPage: (page: Page) => void;
   setSelectedComponent: (component: ComponentItem | null) => void;
   saveComponents: (projectId: string, pageId: string, components: ComponentItem[]) => Promise<void>;
@@ -27,6 +27,7 @@ export const ProjectProvider: React.FC<{ projectId: string; children: ReactNode 
   const [pages, setPages] = useState<Page[]>([]);
   const [selectedPage, setSelectedPage] = useState<Page | null>(null);
   const [selectedComponent, setSelectedComponent] = useState<ComponentItem | null>(null);
+  const [isSaving, setIsSaving] = useState(false);
 
   const selectPage = (page: Page) => {
   
@@ -51,15 +52,35 @@ export const ProjectProvider: React.FC<{ projectId: string; children: ReactNode 
     }
   };
 
-  
-
   const saveComponents = async (projectId: string, pageId: string, components: ComponentItem[]) => {
+    if (!projectId) {
+      console.error('Project ID is not defined');
+      return;
+    }
+  
+    if (!pageId) {
+      console.error('Page ID is not defined');
+      return;
+    }
+  
+    setIsSaving(true);
+  
     try {
-      await save(projectId, pageId, components); 
+      const updatedPage = await save(projectId, pageId, components);
+      setPages((prevPages) =>
+        prevPages.map((p) => (p._id === updatedPage._id ? updatedPage : p))
+      );
+      setSelectedPage(updatedPage);
+      console.log('Components saved successfully');
     } catch (error) {
       console.error('Failed to save components:', error);
     }
   };
+  
+  
+  
+  
+    
 
   const previewPage = async (pageId: string): Promise<string> => {
     if (!projectId) return '';
@@ -81,6 +102,7 @@ export const ProjectProvider: React.FC<{ projectId: string; children: ReactNode 
         selectPage,
         setSelectedComponent,
         saveComponents,
+        isSaving,
         previewPage,
         updateComponent,
         addPage,
