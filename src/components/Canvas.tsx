@@ -1,8 +1,8 @@
 import { useDrop } from 'react-dnd';
 import { availableComponents } from '../components/prPredefinedComponents'; 
-import { ComponentItem } from '../app/type'; 
 import styles from '../styles/Canvas.module.css'
-
+import { ComponentItem } from '../type';
+import { useEffect } from 'react';
 
 interface CanvasProps {
   components: ComponentItem[];
@@ -11,10 +11,13 @@ interface CanvasProps {
   setSelectedComponent: (component: ComponentItem | null) => void;
 }
 
-export default function Canvas({ components, setComponents,setSelectedComponent }: CanvasProps) {
+export default function Canvas({ components, setComponents,setSelectedComponent,selectedComponent }: CanvasProps) {
+
+
   const [, drop] = useDrop({
     accept: 'component',
     drop: (item: ComponentItem) => {
+      console.log('Dropped item:', item); 
         if (item && item.type) {
           const newComponent = { ...item, _id: undefined };
           setComponents([...components, newComponent]);
@@ -25,26 +28,20 @@ export default function Canvas({ components, setComponents,setSelectedComponent 
       
     },
   });
-  const handleComponentClick = (index: number) => {
-    setSelectedComponent(components[index]);  
-  };
-  {components.map((component) => (
-    <div
-      key={component._id} 
-      onClick={() => handleComponentClick(component)}
-      style={{ ...component.properties }}
-    >
-      {renderComponent(component)}
-    </div>
-  ))}
+   const handleComponentClick = (id: string | undefined) => {
+    const component = components.find(comp => comp._id === id) || null;
+     setSelectedComponent(component);  
+   };
+ 
+  
   
   return (
-    <div ref={drop as React.RefObject<HTMLDivElement>}
+    <div ref={drop as unknown as React.RefObject<HTMLDivElement> }
      className={styles.canvas}>
-      {components.map((component) => (
+       {components.map((component, index) => (
         <div 
-        key={component._id}
-        onClick={() => handleComponentClick(component)}  
+        key={component._id ||  `component-${index}`}
+        onClick={() => handleComponentClick(component._id)}  
         style={{ ...component.properties }}
         >
          {renderComponent(component)}
