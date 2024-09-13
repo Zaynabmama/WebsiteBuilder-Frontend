@@ -19,27 +19,43 @@ export default function ProjectBuilder() {
   const [isSaving, setIsSaving] = useState(false);
 
 
-  
  
- 
-
-  
- 
-  const handleSaveComponents = async () => {
+  // const handleSave = () => {
+  //   if (!selectedPage) {
+  //     console.error('No page selected');
+  //     return;
+  //   }
+   
+  //   saveComponents(projectId, selectedPage._id, selectedPage.components);
+  // };
+  const handleSave = () => {
+    if (!projectId) {
+      console.error('Project ID is not defined');
+      return;
+    }
     if (!selectedPage) {
       console.error('No page selected');
       return;
     }
   
-    try {
-      setIsSaving(true);
-      await saveComponents(projectId, selectedPage._id, selectedPage.components);
-    } catch (error) {
-      console.error('Error saving components:', error);
-    } finally {
-      setIsSaving(false);
-    }
+    saveComponents(projectId, selectedPage._id, selectedPage.components);
   };
+  
+  // const handleSaveComponents = async () => {
+  //   if (!selectedPage) {
+  //     console.error('No page selected');
+  //     return;
+  //   }
+  
+  //   try {
+  //     setIsSaving(true);
+  //     await saveComponents(projectId, selectedPage._id, selectedPage.components);
+  //   } catch (error) {
+  //     console.error('Error saving components:', error);
+  //   } finally {
+  //     setIsSaving(false);
+  //   }
+  // };
   
   const handlePreview = async () => {
     if (selectedPage) {
@@ -61,9 +77,7 @@ export default function ProjectBuilder() {
   //   }
   // };
 
-  useEffect(() => {
-    console.log('Selected Page in ProjectBuilder:', selectedPage);
-  }, [selectedPage]);
+ 
 
   return (
     
@@ -76,7 +90,7 @@ export default function ProjectBuilder() {
             <div className={styles.topBar}>
                 <h3>Editing Page: {selectedPage.name}</h3>
                 <div className={styles.buttonContainer}>
-                  <button onClick={handleSaveComponents} disabled={isSaving}>
+                  <button onClick={handleSave} disabled={isSaving}>
                     {isSaving ? 'Saving...' : 'Save Components'}
                   </button>
                   <button onClick={handlePreview}>
