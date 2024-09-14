@@ -30,6 +30,6 @@ export interface Component {
         margin: '10px 0',
       },
     },
-    // Add other components similarly...
+
   ];
   
