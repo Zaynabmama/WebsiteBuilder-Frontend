@@ -82,6 +82,18 @@ const Sidebar = ({ projectId }: SidebarProps) => {
     fetchData();
   }, [projectId, setPages]);
 
+  const handleAddPageClick = async () => {
+    if (newPageName.trim()) {
+      try {
+        await addPage(projectId, newPageName);
+        setNewPageName('');
+        setShowInput(false);
+      } catch (error) {
+        console.error('Failed to add page:', error);
+      }
+    }
+  };
+
   const handlePageClick = (page: Page) => {
     selectPage(page);
   };
