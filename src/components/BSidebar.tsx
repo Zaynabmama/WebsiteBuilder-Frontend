@@ -1,7 +1,7 @@
 'use client';
 import { FiPlus, FiTrash, FiFile, FiLayers, FiChevronLeft, FiChevronRight } from 'react-icons/fi';
 import { useEffect, useState } from 'react';
-// import { predefinedComponents } from './templates'; // Import your predefined components
+// import { predefinedComponents } from './templates'; 
 import { useDrag } from 'react-dnd'; 
 import styles from '../styles/BSidebar.module.css';
 import { Page, ComponentItem } from '../type';
@@ -81,18 +81,6 @@ const Sidebar = ({ projectId }: SidebarProps) => {
 
     fetchData();
   }, [projectId, setPages]);
-
-  const handleAddPageClick = async () => {
-    if (newPageName.trim()) {
-      try {
-        await addPage(projectId, newPageName);
-        setNewPageName('');
-        setShowInput(false);
-      } catch (error) {
-        console.error('Failed to add page:', error);
-      }
-    }
-  };
 
   const handlePageClick = (page: Page) => {
     selectPage(page);
