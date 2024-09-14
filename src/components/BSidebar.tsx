@@ -29,6 +29,8 @@ export const predefinedComponents: Record<PredefinedComponentType, PredefinedCom
     },
   },
 };
+
+
 const DraggableComponentItem = ({ component }: DraggableComponentItemProps) => {
   const [, drag] = useDrag({
     type: 'component',
