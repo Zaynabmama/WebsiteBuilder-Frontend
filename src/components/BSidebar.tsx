@@ -1,56 +1,65 @@
 'use client';
 import { FiPlus, FiTrash, FiFile, FiLayers, FiChevronLeft, FiChevronRight } from 'react-icons/fi';
 import { useEffect, useState } from 'react';
-import { availableComponents } from './prPredefinedComponents'; 
+// import { predefinedComponents } from './templates'; // Import your predefined components
 import { useDrag } from 'react-dnd'; 
 import styles from '../styles/BSidebar.module.css';
 import { Page, ComponentItem } from '../type';
 import { useProject } from '../context/ProjectContext';
 import { fetchPages } from '../services/page';
 
-interface ComponentItemProps {
+interface DraggableComponentItemProps {
+  component: ComponentItem; 
+}
+type PredefinedComponentType = 'footer';
+
+interface PredefinedComponent {
   type: string;
-  label: string;
+  properties: React.CSSProperties; 
 }
 
+export const predefinedComponents: Record<PredefinedComponentType, PredefinedComponent> = {
+  footer: {
+    type: 'footer',
+    properties: {
+      backgroundColor: '#333',
+      color: 'white',
+      textAlign: 'center',
+      padding: '10px',
+    },
+  },
+};
+const DraggableComponentItem = ({ component }: DraggableComponentItemProps) => {
+  const [, drag] = useDrag({
+    type: 'component',
+    item: {
+      type: component.type,
+      properties: component.properties,
+    },
+  });
+
+  return (
+    <div ref={drag as unknown as React.LegacyRef<HTMLDivElement>} className={styles.componentItem}>
+      {component.label}
+    </div>
+  );
+};
 
 interface SidebarProps {
   projectId: string;
 }
 
-const getDefaultProperties = (type: string) => {
-  const component = availableComponents.find((comp) => comp.type === type);
-  return component?.defaultProperties || {};
-};
-const DraggableComponentItemProps = ({ type, label }: ComponentItemProps) => {
-  const [, drag] = useDrag({
-    type: 'component',
-    item: {
-       type,
-      properties: getDefaultProperties(type), 
-     },
-
-  });
-  
-
-  return (
-    <div ref={drag as unknown as React.LegacyRef<HTMLDivElement>} className={styles.componentItem}>
-      {label}
-    </div>
-  
-  );
-};
-
-export default function Sidebar({ projectId }: SidebarProps) {
+const Sidebar = ({ projectId }: SidebarProps) => {
   const {
     pages,
     selectedPage,
     addPage,
     deletePage,
     selectPage,
-    setSelectedComponent,
-    setPages, // Add this to set pages
+ 
+    setPages,
   } = useProject();
+
   const [isOpen, setIsOpen] = useState(true);
   const [activeTab, setActiveTab] = useState<'pages' | 'components'>('pages');
   const [newPageName, setNewPageName] = useState('');
@@ -59,6 +68,7 @@ export default function Sidebar({ projectId }: SidebarProps) {
   const toggleSidebar = () => {
     setIsOpen(!isOpen);
   };
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -72,30 +82,22 @@ export default function Sidebar({ projectId }: SidebarProps) {
     fetchData();
   }, [projectId, setPages]);
 
- 
   const handleAddPageClick = async () => {
     if (newPageName.trim()) {
-      console.log('Adding page with name:', newPageName);
       try {
         await addPage(projectId, newPageName);
-        console.log('Page successfully added');
+        setNewPageName('');
+        setShowInput(false);
       } catch (error) {
         console.error('Failed to add page:', error);
       }
-      setNewPageName('');
-      setShowInput(false);
-    } else {
-      console.log('Invalid page name');
     }
   };
-  
-  
 
   const handlePageClick = (page: Page) => {
-   
     selectPage(page);
   };
- 
+
   return (
     <div className={`${styles.sidebar} ${isOpen ? styles.open : styles.closed}`}>
       <button onClick={toggleSidebar} className={styles.toggleButton}>
@@ -139,12 +141,13 @@ export default function Sidebar({ projectId }: SidebarProps) {
             <ul className={styles.pageList}>
               {pages.map((page) => (
                 <li key={page._id} className={styles.pageItem}>
-                  <div onClick={() => handlePageClick(page)}
-                   className={selectedPage?._id === page._id ? styles.selectedPage : ''}
-                   >
+                  <div
+                    onClick={() => handlePageClick(page)}
+                    className={selectedPage?._id === page._id ? styles.selectedPage : ''}
+                  >
                     {isOpen ? page.name : <FiFile className={styles.pageIcon} />}
                   </div>
-                  <FiTrash className={styles.deleteIcon} onClick={() => page._id && deletePage(projectId ,page._id)} />
+                  <FiTrash className={styles.deleteIcon} onClick={() => page._id && deletePage(projectId, page._id)} />
                 </li>
               ))}
             </ul>
@@ -153,8 +156,15 @@ export default function Sidebar({ projectId }: SidebarProps) {
           <div>
             {isOpen && <h4>Components</h4>}
             <div className={styles.componentList}>
-            {availableComponents.map((component) => (
-                <DraggableComponentItemProps key={component.type} type={component.type} label={component.label} />
+              {Object.keys(predefinedComponents).map((key) => (
+                <DraggableComponentItem
+                  key={key}
+                  component={{
+                    type: key,
+                    label: key.charAt(0).toUpperCase() + key.slice(1),
+                    properties: predefinedComponents[key as PredefinedComponentType].properties,
+                  }}
+                />
               ))}
             </div>
           </div>
@@ -162,4 +172,6 @@ export default function Sidebar({ projectId }: SidebarProps) {
       </div>
     </div>
   );
-}
+};
+
+export default Sidebar;
