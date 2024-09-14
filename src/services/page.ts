@@ -50,7 +50,6 @@ export const deletePage = async (projectId: string, pageId: string): Promise<voi
   }
 };
 
-
 export const saveComponents = async (projectId: string, pageId: string, components: ComponentItem[]) => {
   const token = localStorage.getItem('token');
   if (!token) {
@@ -72,6 +71,24 @@ export const saveComponents = async (projectId: string, pageId: string, componen
   }
 
   return response.json();
+};
+
+
+export const fetchComponents = async (projectId: string, pageId: string): Promise<ComponentItem[]> => {
+  const response = await fetch(`http://localhost:5000/components/${projectId}/${pageId}`, {
+    method: 'GET',
+    headers: {
+      Authorization: `Bearer ${getAuthToken()}`,
+      'Content-Type': 'application/json', 
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error('Failed to fetch components');
+  }
+
+  const data = await response.json();
+  return data.components;
 };
 
 
