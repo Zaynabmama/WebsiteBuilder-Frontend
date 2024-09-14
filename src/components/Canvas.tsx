@@ -1,78 +1,86 @@
+'use client';
+import React, { Component, RefObject } from 'react';
 import { useDrop } from 'react-dnd';
-import { availableComponents } from '../components/prPredefinedComponents'; 
-import styles from '../styles/Canvas.module.css'
-import { ComponentItem } from '../type';
-import { useEffect } from 'react';
+import { predefinedComponents } from '../components/templates';
+import styles from '../styles/Canvas.module.css';
+import { ComponentItem } from '../type'; 
 
 interface CanvasProps {
   components: ComponentItem[];
-  setComponents: (components: ComponentItem[]) => void;
-  selectedComponent: ComponentItem | null; 
+  setComponents: (updateFn: (prevComponents: ComponentItem[]) => ComponentItem[]) => void;
+  selectedComponent: ComponentItem | null;
   setSelectedComponent: (component: ComponentItem | null) => void;
+  handleComponentClick: (id: string | undefined) => void;
 }
 
-export default function Canvas({ components, setComponents,setSelectedComponent,selectedComponent }: CanvasProps) {
-
-
-  const [, drop] = useDrop({
+const Canvas: React.FC<CanvasProps> = ({
+  components,
+  setComponents,
+  selectedComponent,
+  setSelectedComponent,
+  handleComponentClick
+}) => {
+  const [{ isOver }, drop] = useDrop({
     accept: 'component',
     drop: (item: ComponentItem) => {
       console.log('Dropped item:', item); 
-        if (item && item.type) {
-          const newComponent = { ...item, _id: undefined };
-          setComponents([...components, newComponent]);
-          console.log('Dropped Component:', newComponent);
-        } else {
-          console.error('Invalid item dropped');
-        }
-      
+
+      if (!item.type) {
+        console.error('Dropped item is missing type:', item);
+        return;
+      }
+
+      if (!item.properties) {
+        console.warn('Dropped item has no properties:', item);
+      } else if (Object.keys(item.properties).length === 0) {
+        console.warn('Dropped item has empty properties:', item);
+      }
+
+      setComponents((prevComponents) => {
+       
+        const newComponent: ComponentItem = {
+          _id: undefined,
+          type: item.type,
+          properties: item.properties,
+        };
+  
+        console.log('New component being added:', newComponent); 
+
+        return [...prevComponents, newComponent];
+      });
     },
+    collect: (monitor) => ({
+      isOver: !!monitor.isOver(),
+    }),
   });
-   const handleComponentClick = (id: string | undefined) => {
-    const component = components.find(comp => comp._id === id) || null;
-     setSelectedComponent(component);  
-   };
- 
-  
-  
+
   return (
-    <div ref={drop as unknown as React.RefObject<HTMLDivElement> }
-     className={styles.canvas}>
-       {components.map((component, index) => (
-        <div 
-        key={component._id ||  `component-${index}`}
-        onClick={() => handleComponentClick(component._id)}  
-        style={{ ...component.properties }}
-        >
-         {renderComponent(component)}
-            </div>
-      ))}
+    <div
+      ref={drop as unknown as RefObject<HTMLDivElement>}
+      className={`${styles.canvas} ${isOver ? styles.over : ''}`}
+    >
+      {components.map((component, index) => {
+        const Component = predefinedComponents[component.type];
+
+        if (!Component) {
+          console.error(`Component type "${component.type}" not found.`);
+          return null;
+        }
+
+        console.log('Rendering component:', component);
+
+        return (
+          <div
+            key={component._id || index} 
+            onClick={() => handleComponentClick(component._id)}
+            className={styles.component}
+          >
+            <Component properties={component.properties || {}} />
+          </div>
+        );
+      })}
     </div>
   );
-}
-
-const renderComponent = (component: ComponentItem) => {
-  switch (component.type) {
-    case 'button':
-      return <button>{component.properties?.text || 'Button'}</button>;
-    case 'header':
-      return <h1 style={component.properties}>{component.properties?.text || 'Header Text'}</h1>;
-    case 'text':
-      return <p style={component.properties}>{component.properties?.text || 'Text Block'}</p>;
-    case 'img':
-      return (
-        <img
-          src={component.properties?.src || 'https://via.placeholder.com/150'}
-          alt={component.properties?.alt || 'Image'}
-          style={{
-            width: component.properties?.width || '150px',
-            height: component.properties?.height || '150px',
-          }}
-        />
-      );
-    case 'container':
-      return <div style={component.properties}>Container</div>;
-    default:
-      return null;
-  }
 };
+
+export default Canvas;
