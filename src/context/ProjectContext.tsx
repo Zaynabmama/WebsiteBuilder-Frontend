@@ -8,10 +8,10 @@ interface ProjectContextType {
   setPages: (pages: Page[]) => void;
   selectedPage: Page | null;
   setSelectedPage: (page: Page | null) => void;
-  selectedComponent: ComponentItem | null;
+
   isSaving: boolean;
   selectPage: (page: Page) => void;
-  setSelectedComponent: (component: ComponentItem | null) => void;
+ 
   saveComponents: (projectId: string, pageId: string, components: ComponentItem[]) => Promise<void>;
   previewPage: (projectId: string, pageId: string) => Promise<string>;
   updateComponent: (updatedProperties: Record<string, any>) => void;
@@ -26,7 +26,7 @@ const ProjectContext = createContext<ProjectContextType | undefined>(undefined);
 export const ProjectProvider: React.FC<{ projectId: string; children: ReactNode }> = ({ projectId, children }) => {
   const [pages, setPages] = useState<Page[]>([]);
   const [selectedPage, setSelectedPage] = useState<Page | null>(null);
-  const [selectedComponent, setSelectedComponent] = useState<ComponentItem | null>(null);
+  
   const [isSaving, setIsSaving] = useState(false);
 
   const selectPage = (page: Page) => {
@@ -97,10 +97,10 @@ export const ProjectProvider: React.FC<{ projectId: string; children: ReactNode 
         pages,
         selectedPage,
         setSelectedPage,
-        selectedComponent,
+
         setPages,
         selectPage,
-        setSelectedComponent,
+
         saveComponents,
         isSaving,
         previewPage,
