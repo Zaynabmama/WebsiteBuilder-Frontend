@@ -1,17 +1,10 @@
-// export interface ComponentItem {
-//   _id?: string;
-//   type: string;
-//   label:string;
-//   properties: Record<string, any>;
-//   children?: ComponentItem[];
-// }
-// import React from 'react';
 
 export interface ComponentItem {
   _id?: string;
   type: string;
-  properties: React.CSSProperties; 
-  label?: string;
+  properties: React.CSSProperties;
+  text?: string;
+  children?: ComponentItem[]; 
 }
 
 export interface Page {
