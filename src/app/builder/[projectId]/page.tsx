@@ -1,5 +1,5 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import Sidebar from '../../../components/BSidebar';
@@ -13,11 +13,26 @@ import { useParams } from 'next/navigation';
 
 export default function ProjectBuilder() {
   const { projectId } = useParams<{ projectId: string }>();
-  const { pages, setPages, selectedPage, setSelectedPage } = useProject();
+  const { pages, setPages, selectedPage,fetchAndSelectPage, setSelectedPage } = useProject();
   const [components, setComponents] = useState<ComponentItem[]>([]);
   const [selectedComponent, setSelectedComponent] = useState<ComponentItem | null>(null);
   const [isSaving, setIsSaving] = useState(false);
+  
 
+  useEffect(() => {
+    if (selectedPage) {
+      const fetchPage = async () => {
+        try {
+          // const page = await fetchAndSelectPage(projectId, selectedPage._id);
+          setComponents(selectedPage.components || []); 
+        } catch (error) {
+          console.error('Error fetching page:', error);
+        }
+      };
+      fetchPage();
+    }
+  }, [projectId, selectedPage, fetchAndSelectPage]);
+  
   const handleSetComponents = (updateFn: (prevComponents: ComponentItem[]) => ComponentItem[]) => {
     const updatedComponents = updateFn(components);
     console.log('Updated components in handleSetComponents:', updatedComponents);
