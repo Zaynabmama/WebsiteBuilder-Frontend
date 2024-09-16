@@ -19,6 +19,22 @@ export const fetchPages = async (projectId: string): Promise<Page[]> => {
   return pagesData;
 };
 
+export const fetchPageById = async (projectId: string, pageId: string): Promise<Page> => {
+  const response = await fetch(`http://localhost:5000/project/${projectId}/page/${pageId}`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${getAuthToken()}`,
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error('Failed to fetch pages');
+  }
+  return response.json();
+};
+
+
 export const createPage = async (projectId: string, name: string): Promise<Page> => {
   const response = await fetch(`http://localhost:5000/project/${projectId}/page`, {
     method: 'POST',
