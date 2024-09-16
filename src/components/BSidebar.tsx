@@ -1,37 +1,19 @@
 'use client';
+import React, { useEffect, useState } from 'react';
 import { FiPlus, FiTrash, FiFile, FiLayers, FiChevronLeft, FiChevronRight } from 'react-icons/fi';
-import { useEffect, useState } from 'react';
-// import { predefinedComponents } from './templates'; 
-import { useDrag } from 'react-dnd'; 
+import { useDrag } from 'react-dnd';
 import styles from '../styles/BSidebar.module.css';
-import { Page, ComponentItem } from '../type';
+import { Page } from '../type';
 import { useProject } from '../context/ProjectContext';
 import { fetchPages } from '../services/page';
+import { advancedPredefinedComponents, AdvancedPredefinedComponent } from './dPredefinedComponents';
+import Modal from './Modal';
 
-interface DraggableComponentItemProps {
-  component: ComponentItem; 
-}
-type PredefinedComponentType = 'footer';
-
-interface PredefinedComponent {
-  type: string;
-  properties: React.CSSProperties; 
+interface DraggableComponentProps {
+  component: AdvancedPredefinedComponent;
 }
 
-export const predefinedComponents: Record<PredefinedComponentType, PredefinedComponent> = {
-  footer: {
-    type: 'footer',
-    properties: {
-      backgroundColor: '#333',
-      color: 'white',
-      textAlign: 'center',
-      padding: '10px',
-    },
-  },
-};
-
-
-const DraggableComponentItem = ({ component }: DraggableComponentItemProps) => {
+const DraggableComponent: React.FC<DraggableComponentProps> = ({ component }) => {
   const [, drag] = useDrag({
     type: 'component',
     item: {
@@ -42,7 +24,7 @@ const DraggableComponentItem = ({ component }: DraggableComponentItemProps) => {
 
   return (
     <div ref={drag as unknown as React.LegacyRef<HTMLDivElement>} className={styles.componentItem}>
-      {component.label}
+      {component.name}
     </div>
   );
 };
@@ -58,14 +40,13 @@ const Sidebar = ({ projectId }: SidebarProps) => {
     addPage,
     deletePage,
     selectPage,
- 
     setPages,
   } = useProject();
 
   const [isOpen, setIsOpen] = useState(true);
   const [activeTab, setActiveTab] = useState<'pages' | 'components'>('pages');
   const [newPageName, setNewPageName] = useState('');
-  const [showInput, setShowInput] = useState(false);
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
 
   const toggleSidebar = () => {
     setIsOpen(!isOpen);
@@ -74,7 +55,7 @@ const Sidebar = ({ projectId }: SidebarProps) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const fetchedPages = await fetchPages(projectId); 
+        const fetchedPages = await fetchPages(projectId);
         setPages(fetchedPages);
       } catch (error) {
         console.error('Failed to fetch pages:', error);
@@ -89,7 +70,7 @@ const Sidebar = ({ projectId }: SidebarProps) => {
       try {
         await addPage(projectId, newPageName);
         setNewPageName('');
-        setShowInput(false);
+        setIsPopupOpen(false);
       } catch (error) {
         console.error('Failed to add page:', error);
       }
@@ -121,24 +102,9 @@ const Sidebar = ({ projectId }: SidebarProps) => {
         {activeTab === 'pages' ? (
           <div>
             {isOpen && <h4>Pages</h4>}
-            {showInput ? (
-              <div className={styles.addPageForm}>
-                <input
-                  type="text"
-                  placeholder="Enter page name"
-                  value={newPageName}
-                  onChange={(e) => setNewPageName(e.target.value)}
-                  className={styles.input}
-                />
-                <button onClick={handleAddPageClick} className={styles.submitButton}>
-                  Add Page
-                </button>
-              </div>
-            ) : (
-              <button onClick={() => setShowInput(true)} className={styles.addButton}>
-                <FiPlus /> {isOpen && 'Add Page'}
-              </button>
-            )}
+            <button onClick={() => setIsPopupOpen(true)} className={styles.addButton}>
+              <FiPlus /> {isOpen && 'Add Page'}
+            </button>
 
             <ul className={styles.pageList}>
               {pages.map((page) => (
@@ -147,9 +113,12 @@ const Sidebar = ({ projectId }: SidebarProps) => {
                     onClick={() => handlePageClick(page)}
                     className={selectedPage?._id === page._id ? styles.selectedPage : ''}
                   >
-                    {isOpen ? page.name : <FiFile className={styles.pageIcon} />}
+                    {isOpen ? page.name : <FiFile className={styles.icon} />}
                   </div>
-                  <FiTrash className={styles.deleteIcon} onClick={() => page._id && deletePage(projectId, page._id)} />
+                  <FiTrash
+                    className={styles.deleteIcon}
+                    onClick={() => page._id && deletePage(projectId, page._id)}
+                  />
                 </li>
               ))}
             </ul>
@@ -158,20 +127,24 @@ const Sidebar = ({ projectId }: SidebarProps) => {
           <div>
             {isOpen && <h4>Components</h4>}
             <div className={styles.componentList}>
-              {Object.keys(predefinedComponents).map((key) => (
-                <DraggableComponentItem
-                  key={key}
-                  component={{
-                    type: key,
-                    label: key.charAt(0).toUpperCase() + key.slice(1),
-                    properties: predefinedComponents[key as PredefinedComponentType].properties,
-                  }}
+              {Object.values(advancedPredefinedComponents).map((component) => (
+                <DraggableComponent
+                  key={component.type}
+                  component={component}
                 />
               ))}
             </div>
           </div>
         )}
       </div>
+
+      <Modal
+        isOpen={isPopupOpen}
+        onClose={() => setIsPopupOpen(false)}
+        onSubmit={handleAddPageClick}
+        newPageName={newPageName}
+        setNewPageName={setNewPageName}
+      />
     </div>
   );
 };

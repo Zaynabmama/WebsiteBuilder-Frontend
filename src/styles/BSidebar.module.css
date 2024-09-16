@@ -1,95 +1,122 @@
 .sidebar {
-    background-color: var(--primary-color);
-    color: var(--white-color);
-    height: 100vh;
-    transition: width 0.3s ease;
-    display: flex;
-    flex-direction: column;
-    position: relative;
-  }
+  background-color: var(--primary-color);
+  color: var(--white-color);
+  height: 100vh;
+  transition: width 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.open {
+  width: 200px;
+}
+
+.closed {
+  width: 80px;
+}
+
+.toggleButton {
+  position: absolute;
+  top: var(--spacing-small);
+  right: 5px;
+  background-color: var(--secondary-color);
+  color: var(--white-color);
+  border: none;
+  cursor: pointer;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.navSection {
+  margin-top: var(--spacing-medium);
+}
+
+.navItem {
+  display: flex;
+  align-items: center;
+  padding: var(--spacing-small) var(--spacing-medium);
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.navItem:hover {
+  background-color: var(--secondary-color);
+}
+
+.icon {
+  font-size: var(--font-medium);
+  margin-right: var(--spacing-small);
+}
+
+.pageSection {
+  padding: var(--spacing-medium);
+  margin-top: var(--spacing-medium);
+}
+
+.addButton {
+  background-color: var(--secondary-color);
+  color: var(--white-color);
+  border: none;
+  padding: var(--spacing-small) var(--spacing-medium);
+  margin: var(--spacing-small) 0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-small);
+  border-radius: 4px;
+  box-shadow: var(--box-shadow);
+}
+
+.pageList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.pageItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   
-  .open {
-    width: 200px;
-  }
-  
-  .closed {
-    width: 80px;
-  }
-  
-  .toggleButton {
-    position: absolute;
-    top: var(--spacing-small);  /* Use small spacing */
-    right: -25px;
-    background-color: var(--secondary-color); /* Use secondary color */
-    color: var(--white-color);  /* White text */
-    border: none;
-    cursor: pointer;
-    border-radius: 50%;
-    width: 30px;
-    height: 30px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  
-  .navSection {
-    margin-top: var(--spacing-medium); /* Medium spacing */
-  }
-  
-  .navItem {
-    display: flex;
-    align-items: center;
-    padding: var(--spacing-small) var(--spacing-medium); /* Small vertical, medium horizontal padding */
-    cursor: pointer;
-    transition: background-color 0.2s ease;
-  }
-  
-  .navItem:hover {
-    background-color: var(--secondary-color); /* Secondary color on hover */
-  }
-  
-  .icon {
-    font-size: var(--font-medium);  /* Medium icon size */
-    margin-right: var(--spacing-small);  /* Small margin between icon and text */
-  }
-  
-  .pageSection {
-    padding: var(--spacing-medium);  /* Medium spacing */
-    margin-top: var(--spacing-medium);  /* Medium margin */
-  }
-  
-  .addButton {
-    background-color: var(--secondary-color); /* Use accent color for the button */
-    color: var(--white-color);  /* White text */
-    border: none;
-    padding: var(--spacing-small) var(--spacing-medium);  /* Small vertical, medium horizontal padding */
-    margin: var(--spacing-small) 0;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: var(--spacing-small);  /* Small gap between icon and text */
-    border-radius: 4px; /* Rounded corners */
-    box-shadow: var(--box-shadow); /* Global box shadow */
-  }
-  
-  .pageList {
-    list-style-type: none;
-    padding: 0;
-  }
-  
-  .pageItem {
-    padding: var(--spacing-small);
-    display: flex;
-    align-items: center;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
-  
-  .pageItem:hover {
-    background-color: var(--secondary-color);  /* Secondary color on hover */
-  }
-  
-  .pageIcon {
-    font-size: var(--font-medium);  /* Small icon size */
-  }
-  
+  padding: 10px;
+  white-space: nowrap;
+  overflow: hidden;      
+  text-overflow: ellipsis; 
+}
+
+.pageItem .pageName {
+  flex-grow: 1;            
+  margin-right: 10px;    
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.pageItem .deleteIcon {
+  flex-shrink: 0;          
+  cursor: pointer;
+}
+
+.pageItem:hover {
+  background-color: rgba(255, 255, 255, 0.1); 
+}
+.pageItem .pageIcon {
+  display: none; 
+}
+
+.open .pageItem .pageIcon {
+  display: inline; 
+}
+
+.pageItem .deleteIcon {
+  display: none; 
+}
+
+.open .pageItem .deleteIcon {
+  display: inline; 
+}
