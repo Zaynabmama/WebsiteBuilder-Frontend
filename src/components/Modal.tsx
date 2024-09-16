@@ -1,40 +1,38 @@
-import React, { useState } from 'react';
+// Modal.tsx
+import React, { ChangeEvent } from 'react';
+import styles from '../styles/Modal.module.css';
 
-interface PopupProps {
+interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onSubmit: (value: string) => void;
+  onSubmit: () => void;
+  newPageName: string;
+  setNewPageName: (name: string) => void;
 }
 
-const SimplePopup: React.FC<PopupProps> = ({ isOpen, onClose, onSubmit }) => {
-  const [value, setValue] = useState('');
-
-  const handleSubmit = () => {
-    if (value.trim() !== '') {
-      onSubmit(value);
-      onClose();
-    }
-  };
-
+const Modal: React.FC<ModalProps> = ({ isOpen, onClose, onSubmit, newPageName, setNewPageName }) => {
   if (!isOpen) return null;
 
   return (
-    <div className="popup-overlay">
-      <div className="popup-content">
-        <h3>Add a New Page</h3>
+    <div className={styles.modalOverlay}>
+      <div className={styles.modalContent}>
+        <h2>Add New Page</h2>
         <input
           type="text"
-          value={value}
-          onChange={(e) => setValue(e.target.value)}
           placeholder="Enter page name"
+          value={newPageName}
+          onChange={(e: ChangeEvent<HTMLInputElement>) => setNewPageName(e.target.value)}
+          className={styles.input}
         />
-        <div className="popup-buttons">
-          <button onClick={handleSubmit}>Add Page</button>
-          <button onClick={onClose}>Close</button>
-        </div>
+        <button onClick={onSubmit} className={styles.submitButton}>
+          Add Page
+        </button>
+        <button onClick={onClose} className={styles.closeButton}>
+          Close
+        </button>
       </div>
     </div>
   );
 };
 
-export default SimplePopup;
+export default Modal;
