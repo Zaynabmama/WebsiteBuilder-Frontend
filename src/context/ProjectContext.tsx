@@ -1,7 +1,7 @@
 'use client';
 import { ComponentItem, Page } from '../type'; 
 import React, { createContext, useState, useContext, ReactNode, useEffect } from 'react';
-import {  fetchPages, createPage as create, deletePage as deletefromservice, saveComponents as save, previewPage as preview} from '../services/page';
+import {  fetchPages, fetchPageById,createPage as create, deletePage as deletefromservice, saveComponents as save, previewPage as preview} from '../services/page';
 
 interface ProjectContextType {
   pages: Page[];
@@ -11,7 +11,7 @@ interface ProjectContextType {
 
   isSaving: boolean;
   selectPage: (page: Page) => void;
- 
+  fetchAndSelectPage:(projectId: string, pageId: string) => Promise<void>;
   saveComponents: (projectId: string, pageId: string, components: ComponentItem[]) => Promise<void>;
   previewPage: (projectId: string, pageId: string) => Promise<string>;
   updateComponent: (updatedProperties: Record<string, any>) => void;
@@ -32,6 +32,14 @@ export const ProjectProvider: React.FC<{ projectId: string; children: ReactNode 
   const selectPage = (page: Page) => {
   
     setSelectedPage(page);
+  };
+  const fetchAndSelectPage = async (pageId: string) => {
+    try {
+      const fetchedPage = await fetchPageById(projectId, pageId);
+      setSelectedPage(fetchedPage);
+    } catch (error) {
+      console.error('Failed to fetch page:', error);
+    }
   };
 
   const addPage = async (projectId: string, name: string) => {
@@ -97,7 +105,7 @@ export const ProjectProvider: React.FC<{ projectId: string; children: ReactNode 
         pages,
         selectedPage,
         setSelectedPage,
-
+        fetchAndSelectPage,
         setPages,
         selectPage,
 
