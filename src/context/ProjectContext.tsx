@@ -12,9 +12,10 @@ interface ProjectContextType {
   isSaving: boolean;
   selectPage: (page: Page) => void;
   fetchAndSelectPage:(projectId: string, pageId: string) => Promise<void>;
-  saveComponents: (projectId: string, pageId: string, components: ComponentItem[]) => Promise<void>;
+  // saveComponents: (projectId: string, pageId: string, components: ComponentItem[]) => Promise<void>;
+  saveComponents: (pageId: string, components: ComponentItem[]) => Promise<void>;
   previewPage: (projectId: string, pageId: string) => Promise<string>;
-  updateComponent: (updatedProperties: Record<string, any>) => void;
+  // updateComponent: (updatedProperties: Record<string, any>) => void;
   addPage: (projectId: string, name: string) => Promise<void>;
   deletePage: (projectId: string, pageId: string) => Promise<void>;
 }
@@ -60,44 +61,32 @@ export const ProjectProvider: React.FC<{ projectId: string; children: ReactNode 
     }
   };
 
-  const saveComponents = async (projectId: string, pageId: string, components: ComponentItem[]) => {
-    if (!projectId) {
-      console.error('Project ID is not defined');
-      return;
-    }
-  
-    if (!pageId) {
-      console.error('Page ID is not defined');
-      return;
-    }
-  
+  const saveComponents = async (pageId: string, components: ComponentItem[]) => {
     setIsSaving(true);
-  
     try {
       const updatedPage = await save(projectId, pageId, components);
-      setPages((prevPages) =>
-        prevPages.map((p) => (p._id === updatedPage._id ? updatedPage : p))
+      setPages(prevPages =>
+        prevPages.map(p => p._id === updatedPage._id ? updatedPage : p)
       );
       setSelectedPage(updatedPage);
       console.log('Components saved successfully');
     } catch (error) {
-      console.error('Failed to save components:', error);
+      console.error('Error saving components:', error);
+    } finally {
+      setIsSaving(false);
     }
   };
   
   
   
-  
-    
+
 
   const previewPage = async (pageId: string): Promise<string> => {
     if (!projectId) return '';
     return await preview(projectId, pageId);
   };
 
-  const updateComponent = (updatedProperties: Record<string, any>) => {
-    
-  };
+
 
   return (
     <ProjectContext.Provider
@@ -112,7 +101,7 @@ export const ProjectProvider: React.FC<{ projectId: string; children: ReactNode 
         saveComponents,
         isSaving,
         previewPage,
-        updateComponent,
+      
         addPage,
         deletePage,
       }}
