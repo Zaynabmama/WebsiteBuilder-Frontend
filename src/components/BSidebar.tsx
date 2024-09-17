@@ -10,7 +10,7 @@ import { advancedPredefinedComponents, AdvancedPredefinedComponent } from './dPr
 import Modal from './Modal';
 
 interface DraggableComponentProps {
-  component: AdvancedPredefinedComponent;
+  component: AdvancedPredefinedComponent<any>; 
 }
 
 const DraggableComponent: React.FC<DraggableComponentProps> = ({ component }) => {
