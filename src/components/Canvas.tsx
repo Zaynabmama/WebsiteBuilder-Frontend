@@ -1,3 +1,4 @@
+
 import React, { RefObject } from 'react';
 import { useDrop } from 'react-dnd';
 import styles from '../styles/Canvas.module.css';
@@ -27,7 +28,7 @@ const Canvas: React.FC<CanvasProps> = ({
         console.error('Dropped item is missing type:', item);
         return;
       }
-
+      console.log('Dropped item:', item);
       const newComponent: ComponentItem = {
         type: item.type,
         properties: item.properties ||{},
