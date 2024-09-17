@@ -6,14 +6,15 @@ import Sidebar from '../../../components/BSidebar';
 import Canvas from '../../../components/Canvas';
 import CustomizationPanel from '../../../components/CustomizationPanel';
 import styles from '../../../styles/Builderr.module.css';
-import { saveComponents, previewPage } from '../../../services/page';
+import { saveComponents, previewPage, fetchComponents, fetchPageById } from '../../../services/page';
 import { useProject } from '../../../context/ProjectContext';
 import { ComponentItem } from '../../../type';
 import { useParams } from 'next/navigation';
+import { AdvancedPredefinedComponentType } from '@/components/dPredefinedComponents';
 
 export default function ProjectBuilder() {
   const { projectId } = useParams<{ projectId: string }>();
-  const { pages, setPages, selectedPage,fetchAndSelectPage, setSelectedPage } = useProject();
+  const { pages, setPages, selectedPage,fetchAndSelectPage, setSelectedPage, } = useProject();
   const [components, setComponents] = useState<ComponentItem[]>([]);
   const [selectedComponent, setSelectedComponent] = useState<ComponentItem | null>(null);
   const [isSaving, setIsSaving] = useState(false);
@@ -23,19 +24,19 @@ export default function ProjectBuilder() {
     if (selectedPage) {
       const fetchPage = async () => {
         try {
-          // const page = await fetchAndSelectPage(projectId, selectedPage._id);
-          setComponents(selectedPage.components || []); 
+           const page = await fetchComponents(projectId, selectedPage._id);
+           setComponents(selectedPage.components || []); 
         } catch (error) {
           console.error('Error fetching page:', error);
         }
       };
       fetchPage();
     }
-  }, [projectId, selectedPage, fetchAndSelectPage]);
+  }, [projectId,selectedPage]);
   
   const handleSetComponents = (updateFn: (prevComponents: ComponentItem[]) => ComponentItem[]) => {
     const updatedComponents = updateFn(components);
-    console.log('Updated components in handleSetComponents:', updatedComponents);
+    console.log('Updated components :', updatedComponents);
 
     if (selectedPage) {
       const updatedPages = pages.map((p) =>
@@ -47,22 +48,44 @@ export default function ProjectBuilder() {
     }
   };
 
+  // const handleSave = async () => {
+  //   if (!projectId || !selectedPage) {
+  //     console.error('Project ID or selected page is not defined');
+  //     return;
+  //   }
+    
+   
+  //   try {
+  //     console.log('Saving components:', components);
+  //     await saveComponents(projectId, selectedPage._id, components);
+  //   } catch (error) {
+  //     console.error('Error saving components:', error);
+  //   }
+  // };
   const handleSave = async () => {
     if (!projectId || !selectedPage) {
       console.error('Project ID or selected page is not defined');
       return;
     }
-    
-    setIsSaving(true);
+  
     try {
+   
       console.log('Saving components:', components);
       await saveComponents(projectId, selectedPage._id, components);
+  
+   
+      const updatedPage = await fetchPageById(projectId, selectedPage._id);
+      const updatedComponents = updatedPage.components || [];
+  
+ 
+      handleSetComponents(() => updatedComponents);
+  
+      console.log('Components saved and updated successfully');
     } catch (error) {
       console.error('Error saving components:', error);
-    } finally {
-      setIsSaving(false);
     }
   };
+  
 
   const handlePreview = async () => {
     if (selectedPage) {
@@ -74,11 +97,13 @@ export default function ProjectBuilder() {
       }
     }
   };
-
-  function handleComponentClick(id: string | undefined): void {
-    console.log('Component clicked:', id);
   
-  }
+
+  const handleComponentClick = (id: string | undefined): void => {
+    const component = components.find(comp => comp._id === id);
+    setSelectedComponent(component || null);
+    console.log('Component clicked:', component?._id, component);
+  };
 
   return (
     <DndProvider backend={HTML5Backend}>
@@ -109,11 +134,12 @@ export default function ProjectBuilder() {
                   />
                 </div>
                 <div className={styles.customizationContainer}>
-                  <CustomizationPanel
-                    selectedComponent={selectedComponent}
-                    updateComponent={(updatedProperties) => {
+                {selectedComponent ? (
+                    <CustomizationPanel
+                    componentType={selectedComponent.type as AdvancedPredefinedComponentType}
+                    properties={selectedComponent.properties}
+                    onPropertiesChange={(updatedProperties) => {
                       if (selectedComponent) {
-                        console.log('Updating component with properties:', updatedProperties); 
                         handleSetComponents((prevComponents) =>
                           prevComponents.map((comp) =>
                             comp._id === selectedComponent._id
@@ -124,6 +150,10 @@ export default function ProjectBuilder() {
                       }
                     }}
                   />
+                  
+                  ) : (
+                    <p>Select a component to customize</p>
+                  )}
                 </div>
               </div>
             </>
