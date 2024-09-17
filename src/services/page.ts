@@ -87,6 +87,7 @@ export const saveComponents = async (projectId: string, pageId: string, componen
   }
 
   return response.json();
+  
 };
 
 
