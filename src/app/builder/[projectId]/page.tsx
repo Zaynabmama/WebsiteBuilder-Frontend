@@ -136,9 +136,9 @@ export default function ProjectBuilder() {
                 <div className={styles.customizationContainer}>
                 {/* {selectedComponent ? (
                     <CustomizationPanel
-                    componentType={selectedComponent.type as AdvancedPredefinedComponent} // Ensure this is a valid type
+                    componentType={selectedComponent.type } // Ensure this is a valid type
                     properties={selectedComponent.properties}
-                    onUpdate={(updatedProperties) => {
+                    onUpdate={(updatedProperties: any) => {
                       if (selectedComponent) {
                         handleSetComponents((prevComponents) =>
                           prevComponents.map((comp) =>

@@ -10,7 +10,7 @@ const SignUp: React.FC = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [submissionError, setSubmissionError] = useState(''); // For post-submission error
+  const [submissionError, setSubmissionError] = useState('');
   const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {

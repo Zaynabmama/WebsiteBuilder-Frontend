@@ -16,7 +16,7 @@
 .navRight {
   display: flex;
   align-items: center;
-  gap: 20px; /* Space between links */
+  gap: 20px; 
 }
 
 .navLink {

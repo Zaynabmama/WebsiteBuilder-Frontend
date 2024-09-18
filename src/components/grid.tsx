@@ -21,7 +21,7 @@ const Grid = ({ components, setComponents }: GridProps) => {
     <div ref={drop as unknown as React.RefObject<HTMLDivElement>} className={styles.grid}>
       {components.map((component, index) => (
         <div key={component._id || index} style={{ ...component.properties }}>
-          {/* Render component based on type */}
+
         </div>
       ))}
     </div>
