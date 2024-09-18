@@ -10,7 +10,7 @@ import { saveComponents, previewPage, fetchComponents, fetchPageById } from '../
 import { useProject } from '../../../context/ProjectContext';
 import { ComponentItem } from '../../../type';
 import { useParams } from 'next/navigation';
-import { AdvancedPredefinedComponentType } from '@/components/dPredefinedComponents';
+import { AdvancedPredefinedComponent } from '@/components/dPredefinedComponents';
 
 export default function ProjectBuilder() {
   const { projectId } = useParams<{ projectId: string }>();
@@ -134,11 +134,11 @@ export default function ProjectBuilder() {
                   />
                 </div>
                 <div className={styles.customizationContainer}>
-                {selectedComponent ? (
+                {/* {selectedComponent ? (
                     <CustomizationPanel
-                    componentType={selectedComponent.type as AdvancedPredefinedComponentType}
+                    componentType={selectedComponent.type as AdvancedPredefinedComponent} // Ensure this is a valid type
                     properties={selectedComponent.properties}
-                    onPropertiesChange={(updatedProperties) => {
+                    onUpdate={(updatedProperties) => {
                       if (selectedComponent) {
                         handleSetComponents((prevComponents) =>
                           prevComponents.map((comp) =>
@@ -151,9 +151,10 @@ export default function ProjectBuilder() {
                     }}
                   />
                   
+                  
                   ) : (
                     <p>Select a component to customize</p>
-                  )}
+                  )} */}
                 </div>
               </div>
             </>
