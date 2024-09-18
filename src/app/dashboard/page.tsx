@@ -27,7 +27,6 @@ export default function DashboardPage() {
   const [validationError, setValidationError] = useState<string | null>(null);
   const router = useRouter();
 
-  // Fetch the list of projects on component mount
   useEffect(() => {
     const fetchProjects = async () => {
       try {
@@ -42,7 +41,7 @@ export default function DashboardPage() {
     fetchProjects();
   }, []);
 
-  // Function to handle project creation
+
   const handleAddProject = async () => {
     if (!newProjectName.trim()) {
       setValidationError('Please enter a valid project name');
@@ -50,7 +49,6 @@ export default function DashboardPage() {
     }
     setValidationError(null);
 
-    // Optimistically add the new project to the UI before waiting for API response
     const optimisticProject = { name: newProjectName, _id: Date.now().toString(), pages: [] };
 
     setProjects((prevProjects) => {
@@ -62,25 +60,25 @@ export default function DashboardPage() {
     try {
       console.log('Creating new project:', newProjectName);
 
-      const startTime = Date.now(); // Start time for API call
+      const startTime = Date.now(); 
 
       const createdProject = await createProjectService(newProjectName);
 
-      const endTime = Date.now(); // End time for API call
-      console.log('API Response Time:', (endTime - startTime) + 'ms'); // Log API response time
+      const endTime = Date.now(); 
+      console.log('API Response Time:', (endTime - startTime) + 'ms'); 
       console.log('Created Project:', createdProject);
 
-      // Replace the optimistic project with the actual project from the backend
+     
       setProjects((prevProjects) =>
         prevProjects.map((proj) =>
           proj._id === optimisticProject._id ? createdProject : proj
         )
       );
 
-      setNewProjectName(''); // Clear the input field
-      setShowAddProjectInput(false); // Hide input field
+      setNewProjectName(''); 
+      setShowAddProjectInput(false); 
     } catch (err) {
-      // If API call fails, remove the optimistic project from the UI
+     
       setProjects((prevProjects) =>
         prevProjects.filter((proj) => proj._id !== optimisticProject._id)
       );
@@ -88,9 +86,8 @@ export default function DashboardPage() {
     }
   };
 
-  // Function to handle project deletion
   const handleDelete = async (projectId: string) => {
-    if (window.confirm('Are you sure you want to delete this project?')) {
+   
       try {
         await deleteProjectService(projectId);
         setProjects((prevProjects) =>
@@ -98,7 +95,7 @@ export default function DashboardPage() {
         );
       } catch (err) {
         setError('Failed to delete project');
-      }
+      
     }
   };
 
@@ -114,7 +111,7 @@ export default function DashboardPage() {
         <div className={styles.projectsSection}>
           <div className={styles.projectsHeader}>
             <h3>Your Projects</h3>
-            {/* Button to toggle input field */}
+         
             <button
               onClick={() => setShowAddProjectInput(!showAddProjectInput)}
               className={styles.addProjectButton}
@@ -123,7 +120,7 @@ export default function DashboardPage() {
             </button>
           </div>
 
-          {/* Conditional rendering for the input field */}
+
           {showAddProjectInput && (
             <div className={styles.addProjectForm}>
               <input
@@ -140,7 +137,7 @@ export default function DashboardPage() {
             </div>
           )}
 
-          {/* Display loading, error, or projects */}
+       
           {loading ? (
             <p>Loading projects...</p>
           ) : error ? (
