@@ -47,6 +47,7 @@ const Sidebar = ({ projectId }: SidebarProps) => {
   const [activeTab, setActiveTab] = useState<'pages' | 'components'>('pages');
   const [newPageName, setNewPageName] = useState('');
   const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const [showInput, setShowInput] = useState(false);
 
   const toggleSidebar = () => {
     setIsOpen(!isOpen);
@@ -70,7 +71,8 @@ const Sidebar = ({ projectId }: SidebarProps) => {
       try {
         await addPage(projectId, newPageName);
         setNewPageName('');
-        setIsPopupOpen(false);
+        // setIsPopupOpen(false);
+        setShowInput(false);
       } catch (error) {
         console.error('Failed to add page:', error);
       }
@@ -99,12 +101,27 @@ const Sidebar = ({ projectId }: SidebarProps) => {
       </div>
 
       <div className={styles.pageSection}>
-        {activeTab === 'pages' ? (
+      {activeTab === 'pages' ? (
           <div>
             {isOpen && <h4>Pages</h4>}
-            <button onClick={() => setIsPopupOpen(true)} className={styles.addButton}>
-              <FiPlus /> {isOpen && 'Add Page'}
-            </button>
+            {showInput ? (
+              <div className={styles.addPageForm}>
+                <input
+                  type="text"
+                  placeholder="Enter page name"
+                  value={newPageName}
+                  onChange={(e) => setNewPageName(e.target.value)}
+                  className={styles.input}
+                />
+                <button onClick={handleAddPageClick} className={styles.submitButton}>
+                  Add Page
+                </button>
+              </div>
+            ) : (
+              <button onClick={() => setShowInput(true)} className={styles.addButton}>
+                <FiPlus /> {isOpen && 'Add Page'}
+              </button>
+            )}
 
             <ul className={styles.pageList}>
               {pages.map((page) => (
@@ -140,6 +157,7 @@ const Sidebar = ({ projectId }: SidebarProps) => {
 
 
     </div>
+    
   );
 };
 
