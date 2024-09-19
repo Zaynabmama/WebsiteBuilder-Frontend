@@ -109,11 +109,12 @@ export default function ProjectBuilder() {
     <DndProvider backend={HTML5Backend}>
       <div className={styles.builderContainer}>
         <Sidebar projectId={projectId} />
+        
         <div className={styles.editor}>
           {selectedPage ? (
             <>
               <div className={styles.topBar}>
-                <h3>Editing Page: {selectedPage.name}</h3>
+                <h3> Page Name: {selectedPage.name}</h3>
                 <div className={styles.buttonContainer}>
                   <button onClick={handleSave} disabled={isSaving}>
                     {isSaving ? 'Saving...' : 'Save Components'}
