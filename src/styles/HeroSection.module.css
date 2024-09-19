@@ -1,0 +1,30 @@
+.heroSection {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: white;
+    background-size: cover;
+    background-position: center;
+  }
+  
+  .heroHeading {
+    font-size: 2rem;
+    margin: 0;
+  }
+  
+  .heroSubheading {
+    font-size: 1rem;
+    margin: 10px 0;
+  }
+  
+  .heroButton {
+    padding: 8px 16px;
+    background-color: #007bff;
+    color: white;
+    text-decoration: none;
+    border-radius: 4px;
+  }
+  
