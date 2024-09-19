@@ -1,31 +1,52 @@
 import { useState, useEffect } from 'react';
 import styles from '../styles/CustomizationPanel.module.css';
 
-// interface ComponentItem {
-//   type: 'button' | 'header' | 'text' | 'img' | 'container';
-//   properties: {
-//     text?: string;
-//     color?: string;
-//     backgroundColor?: string;
-//     fontSize?: string;
-//     src?: string;
-//     alt?: string;
-//     width?: string;
-//     height?: string;
-//     justifyContent?: string;
-//     alignItems?: string;
-//     padding?: string;
-//   };
-// }
 interface ComponentItem {
-    type: string; 
-    properties: Record<string, any>;
-  }
-  
+  type: string; 
+  properties: Record<string, any>;
+}
+
+interface PropertyConfig {
+  label: string;
+  type: 'text' | 'color' | 'number' | 'select' | 'textarea';
+  options?: string[]; // For select inputs
+  defaultValue?: any;
+}
+
 interface CustomizationPanelProps {
   selectedComponent: ComponentItem | null;
   updateComponent: (updatedProperties: ComponentItem['properties']) => void;
 }
+
+const propertyConfigs: Record<string, Record<string, PropertyConfig>> = {
+  button: {
+    text: { label: 'Text', type: 'text', defaultValue: '' },
+    color: { label: 'Color', type: 'color', defaultValue: '#000000' },
+    backgroundColor: { label: 'Background Color', type: 'color', defaultValue: '#ffffff' },
+    fontSize: { label: 'Font Size', type: 'number', defaultValue: '16' },
+  },
+  navbar: {
+    backgroundColor: { label: 'Background Color', type: 'color', defaultValue: '#ffffff' },
+    color: { label: 'Color', type: 'color', defaultValue: '#000000' },
+    logo: { label: 'Logo', type: 'text', defaultValue: '' },
+    flexDirection: { label: 'Flex Direction', type: 'select', options: ['row', 'column'], defaultValue: 'row' },
+    justifyContent: { label: 'Justify Content', type: 'select', options: ['flex-start', 'center', 'flex-end'], defaultValue: 'center' },
+    alignItems: { label: 'Align Items', type: 'select', options: ['flex-start', 'center', 'flex-end'], defaultValue: 'center' },
+  },
+  heroSection: {
+    backgroundImage: { label: 'Background Image URL', type: 'text', defaultValue: '' },
+    title: { label: 'Title', type: 'text', defaultValue: 'Welcome!' },
+    subtitle: { label: 'Subtitle', type: 'text', defaultValue: '' },
+    buttonText: { label: 'Button Text', type: 'text', defaultValue: 'Learn More' },
+    onClick: { label: 'Button Click Action', type: 'text', defaultValue: 'alert("Button clicked!")' },
+  },
+  pricingCards: {
+    title: { label: 'Title', type: 'text', defaultValue: 'Pricing Plans' },
+    color: { label: 'Color', type: 'color', defaultValue: '#000000' },
+    backgroundColor: { label: 'Background Color', type: 'color', defaultValue: '#ffffff' },
+    cards: { label: 'Cards (JSON)', type: 'textarea', defaultValue: '[]' },
+  },
+};
 
 export default function CustomizationPanel({ selectedComponent, updateComponent }: CustomizationPanelProps) {
   const [componentProperties, setComponentProperties] = useState<Record<string, any>>({});
@@ -47,47 +68,60 @@ export default function CustomizationPanel({ selectedComponent, updateComponent 
 
   if (!selectedComponent) return null;
 
+  const config = propertyConfigs[selectedComponent.type] || {};
+  
   return (
     <div className={styles.customizationPanel}>
       <h3>Customize {selectedComponent.type}</h3>
+      {Object.keys(config).map((key) => {
+        const field = config[key];
+        const value = componentProperties[key] || field.defaultValue;
 
-      {selectedComponent.type === 'button' && (
-        <div className={styles.customizationField}>
-          <label>Text</label>
-          <input
-            type="text"
-            value={componentProperties.text || ''}
-            onChange={(e) => handlePropertyChange('text', e.target.value)}
-          />
-        </div>
-      )}
-
-      <div className={styles.customizationField}>
-        <label>Color</label>
-        <input
-          type="color"
-          value={componentProperties.color || '#000000'}
-          onChange={(e) => handlePropertyChange('color', e.target.value)}
-        />
-      </div>
-
-      <div className={styles.customizationField}>
-        <label>Background Color</label>
-        <input
-          type="color"
-          value={componentProperties.backgroundColor || '#ffffff'}
-          onChange={(e) => handlePropertyChange('backgroundColor', e.target.value)}
-        />
-      </div>
-
-      <div className={styles.customizationField}>
-        <label>Font Size</label>
-        <input
-          type="number"
-          value={componentProperties.fontSize || '16'}
-          onChange={(e) => handlePropertyChange('fontSize', e.target.value)}
-        />
-      </div>
+        return (
+          <div key={key} className={styles.customizationField}>
+            <label>{field.label}</label>
+            {field.type === 'text' && (
+              <input
+                type="text"
+                value={value}
+                onChange={(e) => handlePropertyChange(key, e.target.value)}
+              />
+            )}
+            {field.type === 'color' && (
+              <input
+                type="color"
+                value={value}
+                onChange={(e) => handlePropertyChange(key, e.target.value)}
+              />
+            )}
+            {field.type === 'number' && (
+              <input
+                type="number"
+                value={value}
+                onChange={(e) => handlePropertyChange(key, e.target.value)}
+              />
+            )}
+            {field.type === 'select' && field.options && (
+              <select
+                value={value}
+                onChange={(e) => handlePropertyChange(key, e.target.value)}
+              >
+                {field.options.map((option) => (
+                  <option key={option} value={option}>
+                    {option}
+                  </option>
+                ))}
+              </select>
+            )}
+            {field.type === 'textarea' && (
+              <textarea
+                value={value}
+                onChange={(e) => handlePropertyChange(key, e.target.value)}
+              />
+            )}
+          </div>
+        );
+      })}
     </div>
   );
 }
