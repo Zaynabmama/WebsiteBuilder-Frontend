@@ -138,13 +138,7 @@ const Sidebar = ({ projectId }: SidebarProps) => {
         )}
       </div>
 
-      <Modal
-        isOpen={isPopupOpen}
-        onClose={() => setIsPopupOpen(false)}
-        onSubmit={handleAddPageClick}
-        newPageName={newPageName}
-        setNewPageName={setNewPageName}
-      />
+
     </div>
   );
 };
