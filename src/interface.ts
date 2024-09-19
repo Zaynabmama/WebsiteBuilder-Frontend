@@ -23,13 +23,22 @@ export interface NavbarProperties {
   justifyContent: JustifyContent;
   alignItems: AlignItems;
 }
+export interface HeroSectionProperties {
+    backgroundColor: string;
+    color: string;
+    title: string;
+    subtitle: string;
+    buttonText: string;
+    buttonHref: string;
+  }
 
 export interface AdvancedPredefinedComponent<T> {
-  type: 'footer' | 'navbar';
+  type: 'footer' | 'navbar' | 'heroSection';
   name: string;
   Component: ({ properties }: { properties: T }) => JSX.Element;
   properties: T;
 }
   export type AdvancedPredefinedComponentType =
   | 'navbar'
-  | 'footer';
+  | 'footer'
+  | 'heroSection';
