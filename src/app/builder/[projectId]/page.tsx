@@ -134,27 +134,23 @@ export default function ProjectBuilder() {
                   />
                 </div>
                 <div className={styles.customizationContainer}>
-                {/* {selectedComponent ? (
-                    <CustomizationPanel
-                    componentType={selectedComponent.type } // Ensure this is a valid type
-                    properties={selectedComponent.properties}
-                    onUpdate={(updatedProperties: any) => {
-                      if (selectedComponent) {
-                        handleSetComponents((prevComponents) =>
-                          prevComponents.map((comp) =>
-                            comp._id === selectedComponent._id
-                              ? { ...comp, properties: updatedProperties }
-                              : comp
-                          )
-                        );
-                      }
-                    }}
-                  />
-                  
-                  
-                  ) : (
-                    <p>Select a component to customize</p>
-                  )} */}
+                {selectedComponent ? (
+  <CustomizationPanel
+    selectedComponent={selectedComponent}
+    updateComponent={(updatedProperties) => {
+      handleSetComponents((prevComponents) =>
+        prevComponents.map((comp) =>
+          comp._id === selectedComponent._id
+            ? { ...comp, properties: updatedProperties }
+            : comp
+        )
+      );
+    }}
+  />
+) : (
+  <p>Select a component to customize</p>
+)}
+
                 </div>
               </div>
             </>
