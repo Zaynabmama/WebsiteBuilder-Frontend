@@ -16,19 +16,7 @@ export interface NavLink {
     alignItems: 'flex-start' | 'center' | 'flex-end' | 'stretch';
   }
   
-  export interface SidebarLink {
-    name: string;
-    href: string;
-  }
-  
-  export interface SidebarProperties {
-    backgroundColor: string;
-    color: string;
-    links: SidebarLink[];
-    flexDirection: 'row' | 'column';
-    justifyContent: 'flex-start' | 'center' | 'flex-end' | 'space-between' | 'space-around' | 'space-evenly';
-    alignItems: 'flex-start' | 'center' | 'flex-end' | 'stretch';
-  }
+
   
   export interface HeroSectionProperties {
     backgroundImage: string;
@@ -39,14 +27,12 @@ export interface NavLink {
   }
   
   export interface CardProperties {
-    backgroundColor: string;
-    color: string;
+    backgroundColor?: string;
+    color?: string;
     title: string;
-    subtitle: string;
     content: string;
-    image?: string;
-    buttonText: string;
-    buttonAction: () => void;
+    buttonText?: string;
+    buttonAction?: () => void;
   }
   
   export interface Card {
@@ -59,11 +45,13 @@ export interface NavLink {
   }
   
   export interface PricingCardProperties {
-    backgroundColor: string;
-    color: string;
+    backgroundColor?: string;
+    color?: string;
     title: string;
-    cards: Card[];
-    buttonColor: string;
+    price: string;
+    features: string[];
+    buttonText: string;
+    buttonAction: () => void;
   }
   
   export interface Testimonial {
@@ -72,11 +60,10 @@ export interface NavLink {
   }
   
   export interface TestimonialSectionProperties {
-    backgroundColor: string;
-    color: string;
+    backgroundColor?: string;
+    color?: string;
     testimonials: Testimonial[];
   }
-  
   export interface TeamMember {
     name: string;
     role: string;
@@ -84,14 +71,14 @@ export interface NavLink {
   }
   
   export interface TeamSectionProperties {
-    backgroundColor: string;
-    color: string;
+    backgroundColor?: string;
+    color?: string;
     team: TeamMember[];
   }
   
   export interface ContactFormProperties {
-    backgroundColor: string;
-    color: string;
+    backgroundColor?: string;
+    color?: string;
     placeholderName: string;
     placeholderEmail: string;
     placeholderMessage: string;
@@ -99,25 +86,21 @@ export interface NavLink {
   }
   
   export interface FooterProperties {
-    backgroundColor: string;
-    color: string;
+    backgroundColor?: string;
+    color?: string;
     links: NavLink[];
   }
-  
-  export interface ImageGalleryProperties {
-    images: string[];
-  }
+
   
   export interface BlogPost {
-    href: string | undefined;
+    href?: string;
     title: string;
     excerpt: string;
-    date: string;
   }
   
   export interface BlogSectionProperties {
-    backgroundColor: string;
-    color: string;
+    backgroundColor?: string;
+    color?: string;
     posts: BlogPost[];
   }
   
@@ -130,15 +113,15 @@ export interface NavLink {
   }
   
   export type AdvancedPredefinedComponentType =
-    | 'navbar'
-    | 'sidebar'
-    | 'heroSection'
-    | 'card'
-    | 'pricingCards'
-    | 'testimonialSection'
-    | 'teamSection'
-    | 'contactForm'
-    | 'footer'
-
-    | 'blogSection';
+  | 'navbar'
+  | 'heroSection'
+  | 'card'
+  | 'pricingCards'
+  | 'testimonialSection'
+  | 'teamSection'
+  | 'contactForm'
+  | 'footer'
+  | 'blogSection'
+  | 'stats'
+  | 'features';
   
