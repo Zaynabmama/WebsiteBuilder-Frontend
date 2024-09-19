@@ -44,7 +44,7 @@ const propertyConfigs: Record<string, Record<string, PropertyConfig>> = {
     title: { label: 'Title', type: 'text', defaultValue: 'Pricing Plans' },
     color: { label: 'Color', type: 'color', defaultValue: '#000000' },
     backgroundColor: { label: 'Background Color', type: 'color', defaultValue: '#ffffff' },
-    cards: { label: 'Cards (JSON)', type: 'textarea', defaultValue: '[]' },
+    cards: { label: 'Cards ', type: 'textarea', defaultValue: '[]' },
   },
 };
 
