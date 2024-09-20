@@ -9,7 +9,7 @@ interface ComponentItem {
 interface PropertyConfig {
   label: string;
   type: 'text' | 'color' | 'number' | 'select' | 'textarea';
-  options?: string[]; // For select inputs
+  options?: string[];
   defaultValue?: any;
 }
 
@@ -34,17 +34,20 @@ const propertyConfigs: Record<string, Record<string, PropertyConfig>> = {
     alignItems: { label: 'Align Items', type: 'select', options: ['flex-start', 'center', 'flex-end'], defaultValue: 'center' },
   },
   heroSection: {
-    backgroundImage: { label: 'Background Image URL', type: 'text', defaultValue: '' },
+    backgroundColor: { label: 'Background Color', type: 'color', defaultValue: '#4A90E2' },
+    color: { label: 'Text Color', type: 'color', defaultValue: '#FFFFFF' },
     title: { label: 'Title', type: 'text', defaultValue: 'Welcome!' },
     subtitle: { label: 'Subtitle', type: 'text', defaultValue: '' },
     buttonText: { label: 'Button Text', type: 'text', defaultValue: 'Learn More' },
-    onClick: { label: 'Button Click Action', type: 'text', defaultValue: 'alert("Button clicked!")' },
   },
   pricingCards: {
     title: { label: 'Title', type: 'text', defaultValue: 'Pricing Plans' },
     color: { label: 'Color', type: 'color', defaultValue: '#000000' },
     backgroundColor: { label: 'Background Color', type: 'color', defaultValue: '#ffffff' },
     cards: { label: 'Cards ', type: 'textarea', defaultValue: '[]' },
+  },
+  blogSection: {
+    posts: { label: 'label', type: 'textarea', defaultValue: '[]' },
   },
 };
 
