@@ -1,30 +1,34 @@
 .heroSection {
-    height: 100vh;
+    padding: 60px 20px;
+    text-align: center;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: center;
-    text-align: center;
-    color: white;
-    background-size: cover;
-    background-position: center;
+    min-height: 400px;
   }
   
-  .heroHeading {
-    font-size: 2rem;
-    margin: 0;
+  .heroTitle {
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+    font-weight: bold;
   }
   
-  .heroSubheading {
-    font-size: 1rem;
-    margin: 10px 0;
+  .heroSubtitle {
+    font-size: 1.25rem;
+    margin-bottom: 30px;
   }
   
   .heroButton {
-    padding: 8px 16px;
-    background-color: #007bff;
-    color: white;
+    padding: 10px 20px;
+    font-size: 1rem;
+    font-weight: bold;
+    color: #fff;
+    background-color: #333;
     text-decoration: none;
-    border-radius: 4px;
+    border-radius: 5px;
+  }
+  
+  .heroButton:hover {
+    background-color: #555;
   }
   
