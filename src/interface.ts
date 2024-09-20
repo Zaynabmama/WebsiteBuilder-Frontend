@@ -31,9 +31,22 @@ export interface HeroSectionProperties {
     buttonText: string;
     buttonHref: string;
   }
+  export interface ServiceProperties {
+    backgroundColor: string;
+    color: string;
+    title: string;
+    description: string;
+    features: string[];
+    flexDirection: FlexDirection;
+    justifyContent: JustifyContent;
+    alignItems: AlignItems; 
+    borderRadius?: string; 
+    borderColor?: string; 
+  }
+  
 
 export interface AdvancedPredefinedComponent<T> {
-  type: 'footer' | 'navbar' | 'heroSection';
+  type: 'footer' | 'navbar' | 'heroSection'|'service';
   name: string;
   Component: ({ properties }: { properties: T }) => JSX.Element;
   properties: T;
@@ -41,4 +54,5 @@ export interface AdvancedPredefinedComponent<T> {
   export type AdvancedPredefinedComponentType =
   | 'navbar'
   | 'footer'
-  | 'heroSection';
+  | 'heroSection'
+  |'service';
