@@ -113,8 +113,8 @@ export default function ProjectBuilder() {
         <div className={styles.editor}>
           {selectedPage ? (
             <>
-              <div className={styles.topBar}>
-                <h3> Page Name: {selectedPage.name}</h3>
+              {/* <div className={styles.topBar}>
+                <h3> Page Name: {selectedPage.name}</h3> */}
                 <div className={styles.buttonContainer}>
                   <button onClick={handleSave} disabled={isSaving}>
                     {isSaving ? 'Saving...' : 'Save Components'}
@@ -123,7 +123,7 @@ export default function ProjectBuilder() {
                     Preview Page
                   </button>
                 </div>
-              </div>
+              {/* </div> */}
               <div className={styles.mainEditorContainer}>
                 <div className={styles.canvasContainer}>
                   <Canvas
