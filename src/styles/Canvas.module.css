@@ -1,0 +1,13 @@
+.canvas {
+  flex-grow: 1;
+  min-height: 500px;
+  background-color: #f9f9f9;
+  padding: 20px;
+  border: 1px dashed #ccc;
+  position: relative;
+}
+
+.canvasDropHover {
+  background-color: #e0e0e0;
+  border-color: #999;
+}

@@ -1,0 +1,34 @@
+.heroSection {
+    padding: 60px 20px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: 400px;
+  }
+  
+  .heroTitle {
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+    font-weight: bold;
+  }
+  
+  .heroSubtitle {
+    font-size: 1.25rem;
+    margin-bottom: 30px;
+  }
+  
+  .heroButton {
+    padding: 10px 20px;
+    font-size: 1rem;
+    font-weight: bold;
+    color: #fff;
+    background-color: #333;
+    text-decoration: none;
+    border-radius: 5px;
+  }
+  
+  .heroButton:hover {
+    background-color: #555;
+  }
+  

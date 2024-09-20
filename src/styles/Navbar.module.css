@@ -1,0 +1,49 @@
+.navbar {
+    background-color: #6DAFCB;
+    padding: 20px 30px; 
+    border-radius: 40px;
+    max-width: 1200px;
+    margin: 20px auto;
+    display: flex;
+    justify-content: center; 
+    /* align-items: center; */
+  }
+  
+  .navbarList {
+    display: flex;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    gap: 50px;
+  }
+  
+  .navbarItem {
+    color: white;
+    font-weight: 600;
+    font-size: 16px;
+    text-transform: uppercase;
+    cursor: pointer;
+  }
+  
+  .navbarItem a {
+    color: inherit;
+    text-decoration: none;
+  }
+  
+  .navbarItem a:hover {
+    color: #e0e0e0; 
+  }
+  
+  .joinButton {
+    background-color: #1D6679;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 25px;
+    font-weight: 600;
+    font-size: 16px;
+    text-transform: uppercase;
+    cursor: pointer;
+    text-decoration: none;
+    margin-left: 50px; 
+  }
+  

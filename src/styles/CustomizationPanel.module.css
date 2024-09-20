@@ -1,0 +1,42 @@
+.customizationPanel {
+    background-color: #f7f7f7;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    max-width: 300px;
+  }
+  
+  .customizationPanel h3 {
+    font-size: 18px;
+    color: #333;
+    margin-bottom: 10px;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 8px;
+  }
+  
+  .customizationField {
+    margin-bottom: 15px;
+  }
+  
+  .customizationField label {
+    display: block;
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 5px;
+  }
+  
+  .customizationField input {
+    width: 100%;
+    padding: 8px;
+    font-size: 14px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+  }
+  
+  .customizationField input[type="color"] {
+    padding: 0;
+    height: 35px;
+    width: 100%;
+  }
+  
