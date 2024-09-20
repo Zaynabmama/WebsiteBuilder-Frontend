@@ -10,7 +10,7 @@ import { saveComponents, previewPage, fetchComponents, fetchPageById } from '../
 import { useProject } from '../../../context/ProjectContext';
 import { ComponentItem } from '../../../type';
 import { useParams } from 'next/navigation';
-import { AdvancedPredefinedComponent } from '@/components/dPredefinedComponents';
+import { advancedPredefinedComponents } from '@/components/dPredefinedComponents';
 
 export default function ProjectBuilder() {
   const { projectId } = useParams<{ projectId: string }>();
