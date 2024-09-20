@@ -57,9 +57,24 @@ export interface HeroSectionProperties {
     alignItems: AlignItems;
   }
   
+  export interface PricingCard {
+    title: string;
+    price: string;
+    features: string[];
+    buttonText: string;
+    buttonHref: string;
+    buttonColor: string;
+  }
+  
+  export interface PricingTableProperties {
+    backgroundColor: string;
+    color: string;
+    title: string;
+    cards: PricingCard[];
+  }
 
 export interface AdvancedPredefinedComponent<T> {
-  type: 'footer' | 'navbar' | 'heroSection'|'service'|  'testimonial';
+  type: 'footer' | 'navbar' | 'heroSection'|'service'|  'testimonial'| 'pricingTable';
   name: string;
   Component: ({ properties }: { properties: T }) => JSX.Element;
   properties: T;
@@ -69,4 +84,5 @@ export interface AdvancedPredefinedComponent<T> {
   | 'footer'
   | 'heroSection'
   |'service'
-  | 'testimonial';
+  | 'testimonial'
+  | 'pricingTable';
