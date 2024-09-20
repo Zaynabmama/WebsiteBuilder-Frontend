@@ -36,17 +36,30 @@ export interface HeroSectionProperties {
     color: string;
     title: string;
     description: string;
-    features: string[];
+    services:[], 
     flexDirection: FlexDirection;
     justifyContent: JustifyContent;
     alignItems: AlignItems; 
     borderRadius?: string; 
     borderColor?: string; 
   }
+  export interface TestimonialProperties {
+    backgroundColor: string;
+    color: string;
+    title: string;
+    testimonials: {
+      name: string;
+      position: string;
+      text: string;
+    }[];
+    flexDirection: FlexDirection;
+    justifyContent: JustifyContent;
+    alignItems: AlignItems;
+  }
   
 
 export interface AdvancedPredefinedComponent<T> {
-  type: 'footer' | 'navbar' | 'heroSection'|'service';
+  type: 'footer' | 'navbar' | 'heroSection'|'service'|  'testimonial';
   name: string;
   Component: ({ properties }: { properties: T }) => JSX.Element;
   properties: T;
@@ -55,4 +68,5 @@ export interface AdvancedPredefinedComponent<T> {
   | 'navbar'
   | 'footer'
   | 'heroSection'
-  |'service';
+  |'service'
+  | 'testimonial';
