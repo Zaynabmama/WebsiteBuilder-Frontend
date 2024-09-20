@@ -3,9 +3,10 @@ import {
   AdvancedPredefinedComponentType,
   FooterProperties,
   NavbarProperties,
+  HeroSectionProperties,
   AdvancedPredefinedComponent,
 } from "@/interface";
-
+ import styles from '../styles/HeroSection.module.css'
 export const advancedPredefinedComponents: Record<AdvancedPredefinedComponentType, AdvancedPredefinedComponent<any>> = {
   footer: {
     type: 'footer',
@@ -45,7 +46,7 @@ export const advancedPredefinedComponents: Record<AdvancedPredefinedComponentTyp
     type: 'navbar',
     name: 'Navbar',
     Component: ({ properties }: { properties: NavbarProperties }) => {
-      const { backgroundColor, color, logo, links, flexDirection, justifyContent, alignItems } = properties;
+      const { backgroundColor, color, logo, links=[], flexDirection, justifyContent, alignItems } = properties;
 
       return (
         <nav style={{ backgroundColor, color, display: 'flex', flexDirection, justifyContent, alignItems, padding: '10px' }}>
@@ -75,5 +76,30 @@ export const advancedPredefinedComponents: Record<AdvancedPredefinedComponentTyp
       justifyContent: 'space-between',
       alignItems: 'center',
     },
-  },
-};
+    },
+    heroSection: {
+      type: 'heroSection',
+      name: 'Hero Section',
+      Component: ({ properties }: { properties: HeroSectionProperties }) => {
+        const { backgroundColor, color, title, subtitle, buttonText, buttonHref } = properties;
+  
+        return (
+          <section className={styles.heroSection} style={{ backgroundColor, color }}>
+            <h1 className={styles.heroTitle}>{title}</h1>
+            <p className={styles.heroSubtitle}>{subtitle}</p>
+            <a href={buttonHref} className={styles.heroButton}>
+              {buttonText}
+            </a>
+          </section>
+        );
+      },
+      properties: {
+        backgroundColor: '#4A90E2', 
+        color: '#FFFFFF',
+        title: 'Transform Your Ideas into Reality',
+        subtitle: 'Discover innovative solutions and take your business to the next level with our expertise and support.',
+        buttonText: 'Get Started',
+        buttonHref: '#get-started',
+      },
+    },
+  };
