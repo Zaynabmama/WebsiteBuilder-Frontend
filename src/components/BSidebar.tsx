@@ -10,6 +10,7 @@ import { advancedPredefinedComponents } from './dPredefinedComponents';
 import Modal from './Modal';
 import { AdvancedPredefinedComponent } from '@/interface';
 
+
 interface DraggableComponentProps {
   component: AdvancedPredefinedComponent<any>; 
 }
@@ -89,6 +90,11 @@ const Sidebar = ({ projectId }: SidebarProps) => {
       <button onClick={toggleSidebar} className={styles.toggleButton}>
         {isOpen ? <FiChevronLeft /> : <FiChevronRight />}
       </button>
+      {/* <div className={styles.logoSection}>
+  <div className={styles.logoContainer}>
+    <img src="/logo.png" alt="Logo" className={styles.logo} />
+  </div>
+</div> */}
 
       <div className={styles.navSection}>
         <div className={styles.navItem} onClick={() => setActiveTab('pages')}>
