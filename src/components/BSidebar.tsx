@@ -6,8 +6,9 @@ import styles from '../styles/BSidebar.module.css';
 import { Page } from '../type';
 import { useProject } from '../context/ProjectContext';
 import { fetchPages } from '../services/page';
-import { advancedPredefinedComponents, AdvancedPredefinedComponent } from './dPredefinedComponents';
+import { advancedPredefinedComponents } from './dPredefinedComponents';
 import Modal from './Modal';
+import { AdvancedPredefinedComponent } from '@/interface';
 
 interface DraggableComponentProps {
   component: AdvancedPredefinedComponent<any>; 
