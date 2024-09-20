@@ -49,6 +49,15 @@ const propertyConfigs: Record<string, Record<string, PropertyConfig>> = {
   blogSection: {
     posts: { label: 'label', type: 'textarea', defaultValue: '[]' },
   },
+  service: {
+    backgroundColor: { label: 'Background Color', type: 'color', defaultValue: '#f9f9f9' },
+    color: { label: 'Text Color', type: 'color', defaultValue: '#333' },
+    serviceItems: { label: 'Service Items', type: 'custom' },
+    flexDirection: { label: 'Flex Direction', type: 'select', options: ['row', 'column'], defaultValue: 'column' },
+    justifyContent: { label: 'Justify Content', type: 'select', options: ['flex-start', 'center', 'flex-end'], defaultValue: 'flex-start' },
+    alignItems: { label: 'Align Items', type: 'select', options: ['flex-start', 'center', 'flex-end'], defaultValue: 'flex-start' },
+  }
+  
 };
 
 export default function CustomizationPanel({ selectedComponent, updateComponent }: CustomizationPanelProps) {
