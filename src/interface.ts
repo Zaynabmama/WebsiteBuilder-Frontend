@@ -60,6 +60,7 @@ export interface HeroSectionProperties {
   export interface PricingCard {
     title: string;
     price: string;
+    description: string;
     features: string[];
     buttonText: string;
     buttonHref: string;

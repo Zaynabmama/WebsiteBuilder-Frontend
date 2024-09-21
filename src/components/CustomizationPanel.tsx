@@ -104,6 +104,11 @@ export default function CustomizationPanel({ selectedComponent, updateComponent 
     };
     handlePropertyChange('testimonials', updatedTestimonials);
   };
+  const handleCardChange = (index: number, field: string, value: any) => {
+    const updatedCards = [...(componentProperties.cards || [])];
+    updatedCards[index] = { ...updatedCards[index], [field]: value };
+    handlePropertyChange('cards', updatedCards);
+  };
   
 
   if (!selectedComponent) return null;
@@ -204,7 +209,34 @@ export default function CustomizationPanel({ selectedComponent, updateComponent 
           />
         </div>
       ))}
+      {componentProperties.cards?.map((card: { title: string; price: string; features: string[]; buttonText: string }, index: number) => (
+        <div key={index} className={styles.cardField}>
+          <h4>Card {index + 1}</h4>
+          <input
+            type="text"
+            placeholder="Card Title"
+            value={card.title}
+            onChange={(e) => handleCardChange(index, 'title', e.target.value)}
+          />
+          <input
+            type="text"
+            placeholder="Price"
+            value={card.price}
+            onChange={(e) => handleCardChange(index, 'price', e.target.value)}
+          />
+          <textarea
+            placeholder="Features (comma-separated)"
+            value={card.features.join(', ')}
+            onChange={(e) => handleCardChange(index, 'features', e.target.value.split(','))}
+          />
+          <input
+            type="text"
+            placeholder="Button Text"
+            value={card.buttonText}
+            onChange={(e) => handleCardChange(index, 'buttonText', e.target.value)}
+          />
+        </div>
+      ))}
     </div>
   );
-
-      }
+}
