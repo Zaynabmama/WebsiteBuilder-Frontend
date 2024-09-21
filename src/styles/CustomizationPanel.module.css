@@ -39,4 +39,20 @@
     height: 35px;
     width: 100%;
   }
+  .cardField {
+    background-color: #ffffff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 15px;
+    margin-bottom: 15px;
+  }
   
+  .cardField h4 {
+    margin-top: 0;
+    margin-bottom: 10px;
+  }
+  
+  .cardField input,
+  .cardField textarea {
+    margin-bottom: 10px;
+  }
