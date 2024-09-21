@@ -73,9 +73,26 @@ export interface HeroSectionProperties {
     title: string;
     cards: PricingCard[];
   }
+  export interface TeamMember {
+    name: string;
+    position: string;
+    photoUrl: string;
+    description: string;
+  }
+  
+  export interface TeamSectionProperties {
+    backgroundColor: string;
+    color: string;
+    title: string;
+    members: TeamMember[];
+    flexDirection: FlexDirection;
+    justifyContent: JustifyContent;
+    alignItems: AlignItems;
+  }
+  
 
 export interface AdvancedPredefinedComponent<T> {
-  type: 'footer' | 'navbar' | 'heroSection'|'service'|  'testimonial'| 'pricingTable';
+  type: 'footer' | 'navbar' | 'heroSection'|'service'|  'testimonial'| 'pricingTable'| 'teamSection';
   name: string;
   Component: ({ properties }: { properties: T }) => JSX.Element;
   properties: T;
@@ -86,4 +103,5 @@ export interface AdvancedPredefinedComponent<T> {
   | 'heroSection'
   |'service'
   | 'testimonial'
-  | 'pricingTable';
+  | 'pricingTable'
+  | 'teamSection';
