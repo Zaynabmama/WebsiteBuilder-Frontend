@@ -33,6 +33,11 @@ const propertyConfigs: Record<string, Record<string, PropertyConfig>> = {
     justifyContent: { label: 'Justify Content', type: 'select', options: ['flex-start', 'center', 'flex-end'], defaultValue: 'center' },
     alignItems: { label: 'Align Items', type: 'select', options: ['flex-start', 'center', 'flex-end'], defaultValue: 'center' },
   },
+  teamSection: {
+    title: { label: 'Title', type: 'text', defaultValue: 'Meet Our Team' },
+   
+   
+  },
   heroSection: {
     backgroundColor: { label: 'Background Color', type: 'color', defaultValue: '#4A90E2' },
     color: { label: 'Text Color', type: 'color', defaultValue: '#FFFFFF' },
@@ -48,6 +53,7 @@ const propertyConfigs: Record<string, Record<string, PropertyConfig>> = {
     justifyContent: { label: 'Justify Content', type: 'select', options: ['flex-start', 'center', 'flex-end'], defaultValue: 'flex-start' },
     alignItems: { label: 'Align Items', type: 'select', options: ['flex-start', 'center', 'flex-end'], defaultValue: 'center' },
   },
+  
   service: {
     backgroundColor: { label: 'Background Color', type: 'color', defaultValue: '#f9f9f9' },
    
@@ -109,7 +115,27 @@ export default function CustomizationPanel({ selectedComponent, updateComponent 
     updatedCards[index] = { ...updatedCards[index], [field]: value };
     handlePropertyChange('cards', updatedCards);
   };
-  
+  const handleMemberChange = (index: number, field: string, value: any) => {
+    const updatedMembers = [...(componentProperties.members || [])];
+    updatedMembers[index] = {
+      ...updatedMembers[index],
+      [field]: value,
+    };
+    handlePropertyChange('members', updatedMembers);
+  };
+
+  const handleAddMember = () => {
+    const newMember = { name: '', position: '', description: '', photoUrl: '' };
+    const updatedMembers = [...(componentProperties.members || []), newMember];
+    handlePropertyChange('members', updatedMembers);
+  };
+
+  const handleRemoveMember = (index: number) => {
+    const updatedMembers = [...(componentProperties.members || [])];
+    updatedMembers.splice(index, 1);
+    handlePropertyChange('members', updatedMembers);
+  };
+
 
   if (!selectedComponent) return null;
 
@@ -237,6 +263,39 @@ export default function CustomizationPanel({ selectedComponent, updateComponent 
           />
         </div>
       ))}
+      {componentProperties.members?.map((member: { name: string; position: string; description: string; photoUrl: string }, index: number) => (
+        <div key={index} className={styles.memberField}>
+          <h4>Member {index + 1}</h4>
+          <input
+            type="text"
+            placeholder="Name"
+            value={member.name}
+            onChange={(e) => handleMemberChange(index, 'name', e.target.value)}
+          />
+          <input
+            type="text"
+            placeholder="Position"
+            value={member.position}
+            onChange={(e) => handleMemberChange(index, 'position', e.target.value)}
+          />
+          <input
+            type="text"
+            placeholder="Photo URL"
+            value={member.photoUrl}
+            onChange={(e) => handleMemberChange(index, 'photoUrl', e.target.value)}
+          />
+          <textarea
+            placeholder="Description"
+            value={member.description}
+            onChange={(e) => handleMemberChange(index, 'description', e.target.value)}
+          />
+          <button onClick={() => handleRemoveMember(index)}>Remove Member</button>
+          
+        </div>
+        
+      ))}
+      <button onClick={handleAddMember}>Add Member</button>
     </div>
   );
 }
+    
