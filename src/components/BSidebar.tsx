@@ -94,10 +94,11 @@ const Sidebar = ({ projectId }: SidebarProps) => {
       
 
       <div className={styles.navSection}>
-    
-  <div className={styles.logoContainer}>
-    <img src="/logo0.png" alt="Logo" className={styles.logo} />
-  </div>
+        <div className={styles.logoSection}>
+          <div className={styles.logoContainer}>
+            <img src="/logo0.png" alt="Logo" className={styles.logo} />
+          </div>
+          </div>
 
         <div
         className={`${styles.navItem} ${activeTab === 'pages' ? styles.active : ''}`}
