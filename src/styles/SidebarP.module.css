@@ -50,18 +50,23 @@
   text-decoration: none;
   color: #6DAFCB;
 }
+.navLink.active {
+  color: #6DAFCB;
+}
 
 .footer {
   display: flex;
   flex-direction: column;
   gap: 1rem;
   margin-top: auto;
+  
 }
 
 .iconLink {
   color: #fff;
   display: flex;
   align-items: center; 
+  cursor: pointer; 
 }
 
 .iconLink:hover {
