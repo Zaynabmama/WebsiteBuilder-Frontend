@@ -49,10 +49,10 @@
   background-color: var(--secondary-color);
 }
 
-/* Table */
+
 .tableContainer {
   width: 100%;
-  overflow-x: auto;  /* Allows table to be scrollable horizontally if needed */
+  overflow-x: auto; 
 }
 
 .table {

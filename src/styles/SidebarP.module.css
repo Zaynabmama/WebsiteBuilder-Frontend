@@ -12,13 +12,22 @@
   color: #fff;
 }
 
-.logoWrapper {
+.logoSection {
   display: flex;
-  margin-bottom: 1rem;
+   justify-content: center; 
+  align-items: center; 
+  
+
+}
+
+.logoContainer {
+  max-width: 100%; 
+  height: auto; 
 }
 
 .logo {
-  height: 50px;
+  max-height: 100px;
+  transition: transform 0.3s ease;
 }
 
 .navLinks {

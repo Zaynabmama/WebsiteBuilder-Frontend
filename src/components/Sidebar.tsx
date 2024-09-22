@@ -21,10 +21,11 @@ const Sidebar = ({ activeTab, setActiveTab }: SidebarProps) => {
     return (
       
         <aside className={styles.sidebar}>
-          <div className={styles.logoWrapper}>
-            <img src="/logo0.png" alt="Logo" className={styles.logo} />
+          <div className={styles.logoSection}>
+            <div className={styles.logoContainer}>
+              <img src="/logo0.png" alt="Logo" className={styles.logo} />
+              </div>
           </div>
-    
           <nav className={styles.navLinks}>
             <div
               className={`${styles.navLink} ${activeTab === 'users' ? styles.active : ''}`}
