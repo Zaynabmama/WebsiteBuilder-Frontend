@@ -25,7 +25,8 @@ const DraggableComponent: React.FC<DraggableComponentProps> = ({ component }) =>
   });
 
   return (
-    <div ref={drag as unknown as React.LegacyRef<HTMLDivElement>} className={styles.componentItem}>
+    <div ref={drag as unknown as React.LegacyRef<HTMLDivElement>}
+    className={styles.componentItem}>
       {component.name}
     </div>
   );
@@ -98,11 +99,15 @@ const Sidebar = ({ projectId }: SidebarProps) => {
     <img src="/logo0.png" alt="Logo" className={styles.logo} />
   </div>
 
-        <div className={styles.navItem} onClick={() => setActiveTab('pages')}>
+        <div
+        className={`${styles.navItem} ${activeTab === 'pages' ? styles.active : ''}`}
+        onClick={() => setActiveTab('pages')}>
           <FiFile className={styles.icon} />
           {isOpen && <span>Pages</span>}
         </div>
-        <div className={styles.navItem} onClick={() => setActiveTab('components')}>
+        <div
+        className={`${styles.navItem} ${activeTab === 'components' ? styles.active : ''}`}
+        onClick={() => setActiveTab('components')}>
           <FiLayers className={styles.icon} />
           {isOpen && <span>Components</span>}
         </div>
@@ -133,7 +138,7 @@ const Sidebar = ({ projectId }: SidebarProps) => {
 
             <ul className={styles.pageList}>
               {pages.map((page) => (
-                <li key={page._id} className={styles.pageItem}>
+                <li key={page._id}className={styles.pageItem}>
                   <div
                     onClick={() => handlePageClick(page)}
                     className={selectedPage?._id === page._id ? styles.selectedPage : ''}

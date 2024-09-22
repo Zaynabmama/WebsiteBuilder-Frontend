@@ -61,7 +61,9 @@
 .navItem:hover {
   background-color: var(--secondary-color);
 }
-
+.navItem.active {
+  background-color: rgba(0, 0, 0, 0.2);
+}
 .icon {
   font-size: var(--font-medium);
   margin-right: var(--spacing-small);
@@ -95,11 +97,21 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  
+  cursor: pointer;
   padding: 10px;
   white-space: nowrap;
   overflow: hidden;      
   text-overflow: ellipsis; 
+  transition: background-color 0.2s;
+}
+
+.selectedPage {
+  font-weight: bold; 
+  
+}
+.closed .selectedPage {
+
+  background-color: rgba(255, 255, 255, 0.2); 
 }
 
 .pageItem .pageName {
