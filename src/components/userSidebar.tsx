@@ -14,9 +14,9 @@ const Navbar = () => {
   return (
     <nav className={styles.navbar}>
       <div className={styles.navLeft}>
-        <Link href="/" className={styles.logo}>
-          My Websites
-        </Link>
+          <div className={styles.logoContainer}>
+        <img src="/logo0.png" alt="Logo" className={styles.logo} />
+      </div>
       </div>
 
       <div className={styles.navRight}>
