@@ -60,9 +60,9 @@ const UserManagement = () => {
 
   return (
     <div className={styles.container}>
-      <h2>User Management</h2>
+      <h2 className={styles.title}>User Management</h2>
       <div>
-        <h3>Total Users: {totalUsers}</h3>
+        <h3 className={styles.subtitle}>Total Users: {totalUsers}</h3>
       </div>
       {error && <p className={styles.error}>{error}</p>}
       <table className={styles.table}>
