@@ -18,7 +18,9 @@ export default function RootLayout({
     <html lang="en">
       <body>
       <AuthProvider>
-          <ProjectProvider projectId={projectId}>{children}</ProjectProvider>
+      <ProjectProvider projectId={projectId || ''}>
+            {children}
+          </ProjectProvider>
         </AuthProvider>
       </body>
     </html>
