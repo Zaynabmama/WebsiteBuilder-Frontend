@@ -11,6 +11,7 @@ import { useProject } from '../../../context/ProjectContext';
 import { ComponentItem } from '../../../type';
 import { useParams } from 'next/navigation';
 import { advancedPredefinedComponents } from '@/components/dPredefinedComponents';
+import Button from '@/components/Button';
 
 export default function ProjectBuilder() {
   const { projectId } = useParams<{ projectId: string }>();
@@ -105,6 +106,10 @@ export default function ProjectBuilder() {
     console.log('Component clicked:', component?._id, component);
   };
 
+  function handleDeploy(): void {
+    throw new Error('Function not implemented.');
+  }
+
   return (
     <DndProvider backend={HTML5Backend}>
       <div className={styles.builderContainer}>
@@ -116,12 +121,15 @@ export default function ProjectBuilder() {
               {/* <div className={styles.topBar}>
                 <h3> Page Name: {selectedPage.name}</h3> */}
                 <div className={styles.buttonContainer}>
-                  <button onClick={handleSave} disabled={isSaving}>
-                    {isSaving ? 'Saving...' : 'Save Components'}
-                  </button>
-                  <button onClick={handlePreview}>
-                    Preview Page
-                  </button>
+                <Button onClick={handleSave} disabled={isSaving} type="button">
+        {isSaving ? 'Saving...' : 'Save'}
+      </Button>
+      <Button onClick={handlePreview} type="button">
+        Preview Page
+      </Button>
+      <Button onClick={handleDeploy} type="button">
+        Deploy
+      </Button>
                 </div>
               {/* </div> */}
               <div className={styles.mainEditorContainer}>
@@ -136,21 +144,23 @@ export default function ProjectBuilder() {
                 </div>
                 <div className={styles.customizationContainer}>
                 {selectedComponent ? (
-  <CustomizationPanel
-    selectedComponent={selectedComponent}
-    updateComponent={(updatedProperties) => {
-      handleSetComponents((prevComponents) =>
-        prevComponents.map((comp) =>
-          comp._id === selectedComponent._id
-            ? { ...comp, properties: updatedProperties }
-            : comp
-        )
-      );
-    }}
-  />
-) : (
-  <p>Select a component to customize</p>
-)}
+                  <CustomizationPanel
+                  selectedComponent={selectedComponent}
+                  updateComponent={(updatedProperties) => {
+                    handleSetComponents((prevComponents) =>
+                      prevComponents.map((comp) =>
+                        comp._id === selectedComponent._id
+                          ? { ...comp, properties: updatedProperties }
+                          : comp
+                      )
+                    );
+                  }}
+                />
+                ) : (
+                  <p>Select a component to customize</p>
+                )}
+  
+
 
                 </div>
               </div>
