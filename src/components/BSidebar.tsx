@@ -90,13 +90,14 @@ const Sidebar = ({ projectId }: SidebarProps) => {
       <button onClick={toggleSidebar} className={styles.toggleButton}>
         {isOpen ? <FiChevronLeft /> : <FiChevronRight />}
       </button>
-      {/* <div className={styles.logoSection}>
-  <div className={styles.logoContainer}>
-    <img src="/logo.png" alt="Logo" className={styles.logo} />
-  </div>
-</div> */}
+      
 
       <div className={styles.navSection}>
+    
+  <div className={styles.logoContainer}>
+    <img src="/logo0.png" alt="Logo" className={styles.logo} />
+  </div>
+
         <div className={styles.navItem} onClick={() => setActiveTab('pages')}>
           <FiFile className={styles.icon} />
           {isOpen && <span>Pages</span>}
@@ -110,7 +111,7 @@ const Sidebar = ({ projectId }: SidebarProps) => {
       <div className={styles.pageSection}>
       {activeTab === 'pages' ? (
           <div>
-            {isOpen && <h4>Pages</h4>}
+            {isOpen }
             {showInput ? (
               <div className={styles.addPageForm}>
                 <input
@@ -149,7 +150,7 @@ const Sidebar = ({ projectId }: SidebarProps) => {
           </div>
         ) : (
           <div>
-            {isOpen && <h4>Components</h4>}
+            {isOpen }
             <div className={styles.componentList}>
               {Object.values(advancedPredefinedComponents).map((component) => (
                 <DraggableComponent
@@ -159,6 +160,7 @@ const Sidebar = ({ projectId }: SidebarProps) => {
               ))}
             </div>
           </div>
+          
         )}
       </div>
 
