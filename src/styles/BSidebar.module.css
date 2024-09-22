@@ -9,7 +9,7 @@
 }
 
 .open {
-  width: 200px;
+  width: 180px;
 }
 
 .closed {
@@ -30,6 +30,20 @@
   display: flex;
   align-items: center;
   justify-content: center;
+}
+.componentList {
+  margin-top: 10px;
+}
+
+.componentItem {
+  padding: 5px 10px; 
+  cursor: pointer; 
+  border-bottom: 1px solid rgba(18, 141, 168, 0.587);
+  transition: background-color 0.2s; 
+}
+
+.componentItem:hover {
+  background-color: rgba(8, 114, 122, 0.1);
 }
 
 .navSection {
@@ -54,8 +68,7 @@
 }
 
 .pageSection {
-  padding: var(--spacing-medium);
-  margin-top: var(--spacing-medium);
+  padding: 10px;
 }
 
 .addButton {
@@ -119,4 +132,24 @@
 
 .open .pageItem .deleteIcon {
   display: inline; 
+}
+.logoSection {
+  display: flex;
+  
+  padding: 10px;
+  margin-bottom: 10px; 
+}
+
+.logoContainer {
+  max-width: 100%; 
+  height: auto; 
+}
+
+.logo {
+  max-height: 100px;
+  transition: transform 0.3s ease;
+}
+
+.logo:hover {
+  transform: scale(1.05); 
 }

@@ -1,0 +1,58 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  max-width: 100%;
+  margin: 0 auto;
+}
+
+.header {
+  color: #1D6679;
+}
+
+.totalProjects {
+  margin-bottom: 20px;
+}
+
+.error {
+  color: red;
+}
+
+.tableContainer {
+  flex: 1; 
+  max-height: 450px; 
+  overflow-y: auto; 
+  margin-top: 20px;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table th, .table td {
+  padding: 10px;
+  border: 1px solid #6DAFCB;
+  text-align: left;
+}
+
+.table th {
+  background-color: #1D6679;
+  color: white;
+}
+
+.table td {
+  background-color: white;
+  color: #1D6679;
+}
+
+.deleteButton {
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.deleteButton:hover {
+  opacity: 0.7;
+  color: red;
+}

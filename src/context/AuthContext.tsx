@@ -20,6 +20,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     const { user: loggedInUser } = await loginService(email, password);
     setUser(loggedInUser);
     console.log('logged in:', loggedInUser); 
+    localStorage.setItem('role', loggedInUser.role);
   };
 
   return (
