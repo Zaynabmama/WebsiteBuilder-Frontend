@@ -109,10 +109,10 @@
   font-weight: bold; 
   
 }
-.closed .selectedPage {
+/* .closed .selectedPage {
 
   background-color: rgba(255, 255, 255, 0.2); 
-}
+} */
 
 .pageItem .pageName {
   flex-grow: 1;            
