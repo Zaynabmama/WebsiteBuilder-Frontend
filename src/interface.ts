@@ -31,6 +31,49 @@ export interface HeroSectionProperties {
     buttonText: string;
     buttonHref: string;
   }
+  export interface ButtonProperties {
+    text: string;
+    onClick: () => void;
+    backgroundColor?: string;
+    color?: string;
+    borderRadius?: string;
+  }
+  
+  export interface InputProperties {
+    placeholder: string;
+    type: string; 
+    onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    value: string;
+    backgroundColor?: string;
+    color?: string;
+  }
+  
+
+  export interface ContactUsProperties {
+    backgroundColor: string;
+    color: string;
+    title: string;
+    description: string;
+    fields: { label: string; type: string; name: string }[];
+    submitText: string;
+  }
+  
+
+  export interface FAQProperties {
+    backgroundColor: string;
+    color: string;
+    questions: { question: string; answer: string }[];
+  }
+  
+
+  export interface CardProperties {
+    backgroundColor: string;
+    title: string;
+    content: string;
+    buttonText?: string;
+    buttonHref?: string;
+    buttonColor?: string;
+  }
   export interface ServiceProperties {
     backgroundColor: string;
     color: string;
@@ -91,17 +134,22 @@ export interface HeroSectionProperties {
   }
   
 
-export interface AdvancedPredefinedComponent<T> {
-  type: 'footer' | 'navbar' | 'heroSection'|'service'|  'testimonial'| 'pricingTable'| 'teamSection';
-  name: string;
-  Component: ({ properties }: { properties: T }) => JSX.Element;
-  properties: T;
-}
+  export interface AdvancedPredefinedComponent<T> {
+    type: 'button' | 'input' | 'footer' | 'navbar' | 'heroSection' | 'service' | 'testimonial' | 'pricingTable' | 'teamSection' | 'contactUs' | 'faq' | 'card';
+    name: string;
+    Component: ({ properties }: { properties: T }) => JSX.Element;
+    properties: T;
+  }
   export type AdvancedPredefinedComponentType =
-  | 'navbar'
+  | 'button'
+  | 'input'
   | 'footer'
+  | 'navbar'
   | 'heroSection'
-  |'service'
+  | 'service'
   | 'testimonial'
   | 'pricingTable'
-  | 'teamSection';
+  | 'teamSection'
+  | 'contactUs'
+  | 'faq'
+  | 'card';
