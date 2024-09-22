@@ -84,7 +84,14 @@ const ProjectManagement = () => {
                   <td>{project.pages.length}</td>
                   <td>{new Date(project.createdAt).toLocaleDateString()}</td>
                   <td>{user.name}</td>
-                  <td>{project.deployment?.status === 'deployed' ? project.deployment.url : 'N/A'}</td>
+                  <td>{project.deployment?.status === 'deployed' ?(
+                   <a href={project.deployment.url} target="_blank" rel="noopener noreferrer">
+                   View Website
+                   </a>
+               ) : (
+                 'N/A'
+                  )}
+                  </td>
                   <td>
                     <button className={styles.deleteButton} onClick={() => handleDelete(project._id)}>
                       <FaTrash />
