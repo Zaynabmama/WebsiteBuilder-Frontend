@@ -65,11 +65,12 @@ const SignUp: React.FC = () => {
           onChange={(e) => setPassword(e.target.value)}
         />
         <Button type="submit">Sign up</Button>
-      </form>
-      {submissionError && <div className={styles.error}>{submissionError}</div>}
+          {submissionError && <div className={styles.error}>{submissionError}</div>}
       <p className={styles.footerText}>
         Already have an account? <a href="/login">Log in</a>
       </p>
+      </form>
+    
     </div>
   );
 };
