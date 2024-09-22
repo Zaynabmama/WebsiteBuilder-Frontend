@@ -137,7 +137,6 @@ export default function DashboardPage() {
             </div>
           )}
 
-       
           {loading ? (
             <p>Loading projects...</p>
           ) : error ? (
