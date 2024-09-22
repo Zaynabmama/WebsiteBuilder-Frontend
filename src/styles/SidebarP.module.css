@@ -43,11 +43,12 @@
   padding: 0.5rem 0;
   display: flex;
   align-items: center;
+  cursor: pointer; 
 }
 
 .navLink:hover {
   text-decoration: none;
-  color: #ffffff;
+  color: #6DAFCB;
 }
 
 .footer {
