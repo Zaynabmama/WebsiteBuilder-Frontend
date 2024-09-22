@@ -20,7 +20,13 @@ export default function LoginPage() {
   
       try {
         await handleLogin(email, password);
+        const userRole = localStorage.getItem('role');
         router.push('/dashboard');
+        if (userRole === 'admin') {
+          router.push('/admin/dashboard');
+        } else {
+          router.push('/dashboard');
+        }
         console.log('login done');
       } catch (err) {
         setError('Login failed. Please check your credentials.');
