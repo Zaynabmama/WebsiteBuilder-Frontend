@@ -42,7 +42,7 @@ const propertyConfigs: Record<string, Record<string, PropertyConfig>> = {
     backgroundColor: { label: 'Background Color', type: 'color', defaultValue: '#4A90E2' },
     color: { label: 'Text Color', type: 'color', defaultValue: '#FFFFFF' },
     title: { label: 'Title', type: 'text', defaultValue: 'Welcome!' },
-    testimonials: { label: 'Testimonials', type: 'textarea', defaultValue: '' },
+    
     buttonText: { label: 'Button Text', type: 'text', defaultValue: 'Learn More' },
   },
   testimonial: {
