@@ -106,9 +106,41 @@ export default function ProjectBuilder() {
     console.log('Component clicked:', component?._id, component);
   };
 
-  function handleDeploy(): void {
-    throw new Error('Function not implemented.');
-  }
+  const handleDeploy = async () => {
+    const projectName = localStorage.getItem('projectName');
+    console.log('Project name from local storage:', projectName);
+  
+    if (!projectName) {
+      console.error('Project name is not available');
+      return;
+    }
+  
+    try {
+      const token = localStorage.getItem('token');
+  
+      const url = `http://localhost:5000/deploy/${encodeURIComponent(projectName)}`;
+      console.log('Deployment URL:', url);
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      
+  
+      const data = await response.json();
+  
+      if (response.ok) {
+        console.log('Deployment successful:', data);
+      } else {
+        console.error('Deployment failed:', data);
+      }
+    } catch (error) {
+      console.error('Error during deployment:', error);
+    }
+  };
+  
 
   return (
     <DndProvider backend={HTML5Backend}>

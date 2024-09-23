@@ -161,10 +161,14 @@ export default function DashboardPage() {
                       <td>{project.deployment?.url ? <a href={project.deployment.url} target="_blank" rel="noopener noreferrer">View Website</a> : 'N/A'}</td>
                       <td>{project.pages.length}</td>
                       <td>
-                        <FaEdit
-                          className={styles.icon}
-                          onClick={() => router.push(`/builder/${project._id}`)}
-                        />
+                      <FaEdit
+  className={styles.icon}
+  onClick={() => {
+    localStorage.setItem('projectName', project.name); 
+    router.push(`/builder/${project._id}`);
+  }}
+/>
+
                         <FaTrash
                           className={styles.icon}
                           onClick={() => handleDelete(project._id)}
