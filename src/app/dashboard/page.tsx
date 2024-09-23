@@ -137,7 +137,6 @@ export default function DashboardPage() {
             </div>
           )}
 
-       
           {loading ? (
             <p>Loading projects...</p>
           ) : error ? (
@@ -149,7 +148,7 @@ export default function DashboardPage() {
                   <tr>
                     <th>Project Name</th>
                     <th>Deployment Status</th>
-                    <th>Deployment URL</th>
+                    <th>Website</th>
                     <th>Number of Pages</th>
                     <th>Actions</th>
                   </tr>
@@ -159,13 +158,17 @@ export default function DashboardPage() {
                     <tr key={project._id}>
                       <td>{project.name}</td>
                       <td>{project.deployment?.status || 'Not Deployed'}</td>
-                      <td>{project.deployment?.url ? <a href={project.deployment.url} target="_blank" rel="noopener noreferrer">View Site</a> : 'N/A'}</td>
+                      <td>{project.deployment?.url ? <a href={project.deployment.url} target="_blank" rel="noopener noreferrer">View Website</a> : 'N/A'}</td>
                       <td>{project.pages.length}</td>
                       <td>
-                        <FaEdit
-                          className={styles.icon}
-                          onClick={() => router.push(`/builder/${project._id}`)}
-                        />
+                      <FaEdit
+  className={styles.icon}
+  onClick={() => {
+    localStorage.setItem('projectName', project.name); 
+    router.push(`/builder/${project._id}`);
+  }}
+/>
+
                         <FaTrash
                           className={styles.icon}
                           onClick={() => handleDelete(project._id)}

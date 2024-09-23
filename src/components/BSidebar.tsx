@@ -10,6 +10,7 @@ import { advancedPredefinedComponents } from './dPredefinedComponents';
 import Modal from './Modal';
 import { AdvancedPredefinedComponent } from '@/interface';
 
+
 interface DraggableComponentProps {
   component: AdvancedPredefinedComponent<any>; 
 }
@@ -24,7 +25,8 @@ const DraggableComponent: React.FC<DraggableComponentProps> = ({ component }) =>
   });
 
   return (
-    <div ref={drag as unknown as React.LegacyRef<HTMLDivElement>} className={styles.componentItem}>
+    <div ref={drag as unknown as React.LegacyRef<HTMLDivElement>}
+    className={styles.componentItem}>
       {component.name}
     </div>
   );
@@ -89,13 +91,24 @@ const Sidebar = ({ projectId }: SidebarProps) => {
       <button onClick={toggleSidebar} className={styles.toggleButton}>
         {isOpen ? <FiChevronLeft /> : <FiChevronRight />}
       </button>
+      
 
       <div className={styles.navSection}>
-        <div className={styles.navItem} onClick={() => setActiveTab('pages')}>
+        <div className={styles.logoSection}>
+          <div className={styles.logoContainer}>
+            <img src="/logo0.png" alt="Logo" className={styles.logo} />
+          </div>
+          </div>
+
+        <div
+        className={`${styles.navItem} ${activeTab === 'pages' ? styles.active : ''}`}
+        onClick={() => setActiveTab('pages')}>
           <FiFile className={styles.icon} />
           {isOpen && <span>Pages</span>}
         </div>
-        <div className={styles.navItem} onClick={() => setActiveTab('components')}>
+        <div
+        className={`${styles.navItem} ${activeTab === 'components' ? styles.active : ''}`}
+        onClick={() => setActiveTab('components')}>
           <FiLayers className={styles.icon} />
           {isOpen && <span>Components</span>}
         </div>
@@ -104,7 +117,7 @@ const Sidebar = ({ projectId }: SidebarProps) => {
       <div className={styles.pageSection}>
       {activeTab === 'pages' ? (
           <div>
-            {isOpen && <h4>Pages</h4>}
+            {isOpen }
             {showInput ? (
               <div className={styles.addPageForm}>
                 <input
@@ -126,7 +139,7 @@ const Sidebar = ({ projectId }: SidebarProps) => {
 
             <ul className={styles.pageList}>
               {pages.map((page) => (
-                <li key={page._id} className={styles.pageItem}>
+                <li key={page._id}className={styles.pageItem}>
                   <div
                     onClick={() => handlePageClick(page)}
                     className={selectedPage?._id === page._id ? styles.selectedPage : ''}
@@ -143,7 +156,7 @@ const Sidebar = ({ projectId }: SidebarProps) => {
           </div>
         ) : (
           <div>
-            {isOpen && <h4>Components</h4>}
+            {isOpen }
             <div className={styles.componentList}>
               {Object.values(advancedPredefinedComponents).map((component) => (
                 <DraggableComponent
@@ -153,6 +166,7 @@ const Sidebar = ({ projectId }: SidebarProps) => {
               ))}
             </div>
           </div>
+          
         )}
       </div>
 

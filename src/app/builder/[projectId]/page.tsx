@@ -11,6 +11,7 @@ import { useProject } from '../../../context/ProjectContext';
 import { ComponentItem } from '../../../type';
 import { useParams } from 'next/navigation';
 import { advancedPredefinedComponents } from '@/components/dPredefinedComponents';
+import Button from '@/components/Button';
 
 export default function ProjectBuilder() {
   const { projectId } = useParams<{ projectId: string }>();
@@ -18,6 +19,8 @@ export default function ProjectBuilder() {
   const [components, setComponents] = useState<ComponentItem[]>([]);
   const [selectedComponent, setSelectedComponent] = useState<ComponentItem | null>(null);
   const [isSaving, setIsSaving] = useState(false);
+  const [isDeploying, setIsDeploying] = useState(false);
+  const [deployMessage, setDeployMessage] = useState('');
   
 
   useEffect(() => {
@@ -47,21 +50,6 @@ export default function ProjectBuilder() {
       console.log('Updated pages and selectedPage:', updatedPages, { ...selectedPage, components: updatedComponents });
     }
   };
-
-  // const handleSave = async () => {
-  //   if (!projectId || !selectedPage) {
-  //     console.error('Project ID or selected page is not defined');
-  //     return;
-  //   }
-    
-   
-  //   try {
-  //     console.log('Saving components:', components);
-  //     await saveComponents(projectId, selectedPage._id, components);
-  //   } catch (error) {
-  //     console.error('Error saving components:', error);
-  //   }
-  // };
   const handleSave = async () => {
     if (!projectId || !selectedPage) {
       console.error('Project ID or selected page is not defined');
@@ -105,6 +93,48 @@ export default function ProjectBuilder() {
     console.log('Component clicked:', component?._id, component);
   };
 
+  const handleDeploy = async () => {
+    const projectName = localStorage.getItem('projectName');
+    console.log('Project name from local storage:', projectName);
+  
+    if (!projectName) {
+      console.error('Project name is not available');
+      return;
+    }
+  
+    try {
+      setIsDeploying(true);
+      setDeployMessage('Your project is being deployed... 🚀');
+      const token = localStorage.getItem('token');
+  
+      const url = `http://localhost:5000/deploy/${encodeURIComponent(projectName)}`;
+      console.log('Deployment URL:', url);
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      
+  
+      const data = await response.json();
+  
+      if (response.ok) {
+        setDeployMessage('Deployment successful! 🎉');
+        console.log('Deployment successful:', data);
+      } else {
+        setDeployMessage('Deployment failed. Please try again. 😢');
+      }
+    } catch (error) {
+      setDeployMessage('Error during deployment. Please try again.');
+      console.error('Error during deployment:', error);
+    } finally {
+      setIsDeploying(false);
+    }
+  };
+  
+
   return (
     <DndProvider backend={HTML5Backend}>
       <div className={styles.builderContainer}>
@@ -113,17 +143,20 @@ export default function ProjectBuilder() {
         <div className={styles.editor}>
           {selectedPage ? (
             <>
-              <div className={styles.topBar}>
-                <h3> Page Name: {selectedPage.name}</h3>
+             
                 <div className={styles.buttonContainer}>
-                  <button onClick={handleSave} disabled={isSaving}>
-                    {isSaving ? 'Saving...' : 'Save Components'}
-                  </button>
-                  <button onClick={handlePreview}>
-                    Preview Page
-                  </button>
-                </div>
+                <Button onClick={handleSave} disabled={isSaving} type="button">
+        {isSaving ? 'Saving...' : 'Save'}
+      </Button>
+      <Button onClick={handlePreview} type="button">
+        Preview Page
+      </Button>
+      <Button onClick={handleDeploy} disabled={isDeploying} type="button">
+      {isDeploying ? 'Deploying...' : 'Deploy'}
+      </Button>
+     
               </div>
+                
               <div className={styles.mainEditorContainer}>
                 <div className={styles.canvasContainer}>
                   <Canvas
@@ -135,22 +168,25 @@ export default function ProjectBuilder() {
                   />
                 </div>
                 <div className={styles.customizationContainer}>
+                {deployMessage && <p className={styles.deployMessage}>{deployMessage}</p>}
                 {selectedComponent ? (
-  <CustomizationPanel
-    selectedComponent={selectedComponent}
-    updateComponent={(updatedProperties) => {
-      handleSetComponents((prevComponents) =>
-        prevComponents.map((comp) =>
-          comp._id === selectedComponent._id
-            ? { ...comp, properties: updatedProperties }
-            : comp
-        )
-      );
-    }}
-  />
-) : (
-  <p>Select a component to customize</p>
-)}
+                  <CustomizationPanel
+                  selectedComponent={selectedComponent}
+                  updateComponent={(updatedProperties) => {
+                    handleSetComponents((prevComponents) =>
+                      prevComponents.map((comp) =>
+                        comp._id === selectedComponent._id
+                          ? { ...comp, properties: updatedProperties }
+                          : comp
+                      )
+                    );
+                  }}
+                />
+                ) : (
+                  <p>Select a component to customize</p>
+                )}
+  
+
 
                 </div>
               </div>

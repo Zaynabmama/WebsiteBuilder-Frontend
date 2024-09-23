@@ -4,14 +4,21 @@
   align-items: center;
   background-color: var(--primary-color);
   padding: 10px 20px;
+  height: 70px;
   color: var(--white-color);
 }
 
 .logo {
-  font-size: var(--font-medium);
-  font-weight: bold;
-  color: var(--white-color);
+  max-height: 100px;
+  width: auto;   
+  height: 100px;
 }
+
+.logoContainer {
+  display: flex;
+  align-items: center;
+}
+
 
 .navRight {
   display: flex;

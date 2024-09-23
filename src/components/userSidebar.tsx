@@ -1,14 +1,22 @@
 import Link from 'next/link';
 import styles from '../styles/Sidebar.module.css';
 import { FaUserCircle, FaSignOutAlt } from 'react-icons/fa';
+import { useRouter } from 'next/navigation';
 
 const Navbar = () => {
+  const router = useRouter();
+  const handleLogout = () => {
+
+    localStorage.removeItem('token');
+  
+    router.push('/login');
+  };
   return (
     <nav className={styles.navbar}>
       <div className={styles.navLeft}>
-        <Link href="/" className={styles.logo}>
-          My Websites
-        </Link>
+          <div className={styles.logoContainer}>
+        <img src="/logo0.png" alt="Logo" className={styles.logo} />
+      </div>
       </div>
 
       <div className={styles.navRight}>
@@ -22,9 +30,9 @@ const Navbar = () => {
         <Link href="/profile" className={styles.iconLink}>
           <FaUserCircle />
         </Link>
-        <Link href="/logout" className={styles.iconLink}>
+        <span className={styles.iconLink} onClick={handleLogout}>
           <FaSignOutAlt />
-        </Link>
+        </span>
       </div>
     </nav>
   );

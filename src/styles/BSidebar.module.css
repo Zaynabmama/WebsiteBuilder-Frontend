@@ -9,7 +9,7 @@
 }
 
 .open {
-  width: 200px;
+  width: 180px;
 }
 
 .closed {
@@ -31,6 +31,20 @@
   align-items: center;
   justify-content: center;
 }
+.componentList {
+  margin-top: 10px;
+}
+
+.componentItem {
+  padding: 5px 10px; 
+  cursor: pointer; 
+  border-bottom: 1px solid rgba(18, 141, 168, 0.587);
+  transition: background-color 0.2s; 
+}
+
+.componentItem:hover {
+  background-color: rgba(8, 114, 122, 0.1);
+}
 
 .navSection {
   margin-top: var(--spacing-medium);
@@ -47,15 +61,16 @@
 .navItem:hover {
   background-color: var(--secondary-color);
 }
-
+.navItem.active {
+  background-color: rgba(0, 0, 0, 0.2);
+}
 .icon {
   font-size: var(--font-medium);
   margin-right: var(--spacing-small);
 }
 
 .pageSection {
-  padding: var(--spacing-medium);
-  margin-top: var(--spacing-medium);
+  padding: 10px;
 }
 
 .addButton {
@@ -82,12 +97,22 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  
+  cursor: pointer;
   padding: 10px;
   white-space: nowrap;
   overflow: hidden;      
   text-overflow: ellipsis; 
+  transition: background-color 0.2s;
 }
+
+.selectedPage {
+  font-weight: bold; 
+  
+}
+/* .closed .selectedPage {
+
+  background-color: rgba(255, 255, 255, 0.2); 
+} */
 
 .pageItem .pageName {
   flex-grow: 1;            
@@ -119,4 +144,25 @@
 
 .open .pageItem .deleteIcon {
   display: inline; 
+}
+.logoSection {
+  display: flex;
+   justify-content: center; 
+  align-items: center; 
+  
+
+}
+
+.logoContainer {
+  max-width: 100%; 
+  height: auto; 
+}
+
+.logo {
+  max-height: 100px;
+  transition: transform 0.3s ease;
+}
+
+.logo:hover {
+  transform: scale(1.05); 
 }
