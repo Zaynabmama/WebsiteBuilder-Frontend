@@ -19,6 +19,8 @@ export default function ProjectBuilder() {
   const [components, setComponents] = useState<ComponentItem[]>([]);
   const [selectedComponent, setSelectedComponent] = useState<ComponentItem | null>(null);
   const [isSaving, setIsSaving] = useState(false);
+  const [isDeploying, setIsDeploying] = useState(false);
+  const [deployMessage, setDeployMessage] = useState('');
   
 
   useEffect(() => {
@@ -48,21 +50,6 @@ export default function ProjectBuilder() {
       console.log('Updated pages and selectedPage:', updatedPages, { ...selectedPage, components: updatedComponents });
     }
   };
-
-  // const handleSave = async () => {
-  //   if (!projectId || !selectedPage) {
-  //     console.error('Project ID or selected page is not defined');
-  //     return;
-  //   }
-    
-   
-  //   try {
-  //     console.log('Saving components:', components);
-  //     await saveComponents(projectId, selectedPage._id, components);
-  //   } catch (error) {
-  //     console.error('Error saving components:', error);
-  //   }
-  // };
   const handleSave = async () => {
     if (!projectId || !selectedPage) {
       console.error('Project ID or selected page is not defined');
