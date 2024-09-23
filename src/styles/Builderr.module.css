@@ -3,7 +3,11 @@
     height: 100vh;
     overflow: hidden;
   }
-  
+  .deployMessage {
+   
+    color: #107187;
+   
+  }
   .editor {
     flex-grow: 1;
     padding: var(--spacing-medium);

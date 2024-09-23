@@ -103,6 +103,8 @@ export default function ProjectBuilder() {
     }
   
     try {
+      setIsDeploying(true);
+      setDeployMessage('Your project is being deployed... 🚀');
       const token = localStorage.getItem('token');
   
       const url = `http://localhost:5000/deploy/${encodeURIComponent(projectName)}`;
@@ -119,12 +121,16 @@ export default function ProjectBuilder() {
       const data = await response.json();
   
       if (response.ok) {
+        setDeployMessage('Deployment successful! 🎉');
         console.log('Deployment successful:', data);
       } else {
-        console.error('Deployment failed:', data);
+        setDeployMessage('Deployment failed. Please try again. 😢');
       }
     } catch (error) {
+      setDeployMessage('Error during deployment. Please try again.');
       console.error('Error during deployment:', error);
+    } finally {
+      setIsDeploying(false);
     }
   };
   
@@ -137,8 +143,7 @@ export default function ProjectBuilder() {
         <div className={styles.editor}>
           {selectedPage ? (
             <>
-              {/* <div className={styles.topBar}>
-                <h3> Page Name: {selectedPage.name}</h3> */}
+             
                 <div className={styles.buttonContainer}>
                 <Button onClick={handleSave} disabled={isSaving} type="button">
         {isSaving ? 'Saving...' : 'Save'}
@@ -146,11 +151,12 @@ export default function ProjectBuilder() {
       <Button onClick={handlePreview} type="button">
         Preview Page
       </Button>
-      <Button onClick={handleDeploy} type="button">
-        Deploy
+      <Button onClick={handleDeploy} disabled={isDeploying} type="button">
+      {isDeploying ? 'Deploying...' : 'Deploy'}
       </Button>
-                </div>
-              {/* </div> */}
+     
+              </div>
+                
               <div className={styles.mainEditorContainer}>
                 <div className={styles.canvasContainer}>
                   <Canvas
@@ -162,6 +168,7 @@ export default function ProjectBuilder() {
                   />
                 </div>
                 <div className={styles.customizationContainer}>
+                {deployMessage && <p className={styles.deployMessage}>{deployMessage}</p>}
                 {selectedComponent ? (
                   <CustomizationPanel
                   selectedComponent={selectedComponent}
